@@ -32,7 +32,7 @@
                                 <!-- Dark Logo icon -->
                                 <img src="{{ asset('assets/admin/images/logo-icon.png') }}" alt="homepage" class="dark-logo" />
                                 <!-- Light Logo icon -->
-                                <img src="{{ asset('assets/admin/images/logo-light-icon.png') }}" alt="homepage" class="light-logo" />
+                                <img style="width: 100%;" src="{{asset('assets/images/logo_1.png')}}" alt="homepage" class="light-logo" />
                             </b>
                             <!--End Logo icon -->
                             <!-- Logo text -->
@@ -40,7 +40,7 @@
                                 <!-- dark Logo text -->
                                 <img src="{{ asset('assets/admin/images/logo-text.png') }}" alt="homepage" class="dark-logo" />
                                 <!-- Light Logo text -->
-                                <img src="{{ asset('assets/admin/images/logo-light-text.png') }}" class="light-logo" alt="homepage" />
+                             <!--    <img src="{{ asset('assets/admin/images/logo-light-text.png') }}" class="light-logo" alt="homepage" /> -->
                             </span>
                         </a>
                         <!-- ============================================================== -->
@@ -63,15 +63,15 @@
                         <!-- ============================================================== -->
                         <ul class="navbar-nav me-auto">
                             <!-- This is  -->
-                            <li class="nav-item"> <a
+                            <li class="nav-item" style="display: none"> <a
                                     class="nav-link sidebartoggler d-none d-md-block waves-effect waves-dark"
                                     href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                             <!-- ============================================================== -->
                             <!-- Search -->
                             <!-- ============================================================== -->
-                            <li class="nav-item d-none d-md-block search-box"> <a
+                            <li class="nav-item d-none d-md-block search-box" style="display: none"> <!-- <a style="display: none"
                                     class="nav-link d-none d-md-block waves-effect waves-dark" href="javascript:void(0)"><i
-                                        class="ti-search"></i></a>
+                                        class="ti-search"></i></a> -->
                                 <form class="app-search">
                                     <input type="text" class="form-control" placeholder="Search & enter"> 
                                     <a class="srh-btn"><i class="ti-close"></i></a> 
@@ -80,7 +80,7 @@
                             <!-- ============================================================== -->
                             <!-- Mega Menu -->
                             <!-- ============================================================== -->
-                            <li class="nav-item dropdown mega-dropdown"> <a
+                            <li class="nav-item dropdown mega-dropdown" style="display: none"> <a
                                     class="nav-link dropdown-toggle waves-effect waves-dark"href="#" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-view-grid"></i></a>
                                 <div class="dropdown-menu dropdown-menu-animate-up">
@@ -199,7 +199,7 @@
                             <!-- Comment -->
                             <!-- ============================================================== -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle waves-effect waves-dark"  href="#" data-bs-toggle="dropdown"
+                                <a class="nav-link dropdown-toggle waves-effect waves-dark"  href="#" data-bs-toggle="dropdown" style="display:none" 
                                     aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
                                     <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
                                 </a>
@@ -282,7 +282,7 @@
                             <!-- Messages -->
                             <!-- ============================================================== -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="2"
+                                <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" id="2" style="display:none" 
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i
                                         class="mdi mdi-email"></i>
                                     <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
@@ -301,9 +301,21 @@
                                                 <!-- Message -->
                                                 <a href="javascript:void(0)"
                                                     class="message-item d-flex align-items-center border-bottom px-3 py-2">
-                                                    <span class="user-img position-relative d-inline-block"> <img
+                                                    <span class="user-img position-relative d-inline-block"> 
+
+                                  @if(Session::has('image'))
+                                        <img src="{{Session::get('image')}}" class="rounded-circle" />
+                                         <img
+                                                            src="{{Session::get('image')}}" alt="user"
+                                                            class="rounded-circle w-100">
+@else
+ <img
                                                             src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user"
-                                                            class="rounded-circle w-100"> <span
+                                                            class="rounded-circle w-100">
+@endif
+                                                        
+
+                                                            <span
                                                             class="profile-status rounded-circle online"></span> </span>
                                                     <div class="w-75 d-inline-block v-middle ps-3">
                                                         <h5 class="message-title mb-0 mt-1 fs-3 fw-bold">Pavan kumar</h5> <span
@@ -315,9 +327,21 @@
                                                 <!-- Message -->
                                                 <a href="javascript:void(0)"
                                                     class="message-item d-flex align-items-center border-bottom px-3 py-2">
-                                                    <span class="user-img position-relative d-inline-block"> <img
+                                                    <span class="user-img position-relative d-inline-block"> 
+
+@if(Session::has('image'))
+                                        <img src="{{Session::get('image')}}" class="rounded-circle" />
+                                         
+                                                                                                                    <img
+                                                            src="{{Session::get('image')}}" alt="user"
+                                                            class="rounded-circle w-100">
+@else
+                                                        <img
                                                             src="{{ asset('assets/admin/images/users/2.jpg') }}" alt="user"
-                                                            class="rounded-circle w-100"> <span
+                                                            class="rounded-circle w-100">
+@endif
+
+ <span
                                                             class="profile-status rounded-circle busy"></span> </span>
                                                     <div class="w-75 d-inline-block v-middle ps-3">
                                                         <h5 class="message-title mb-0 mt-1 fs-3 fw-bold">Sonu Nigam</h5> <span
@@ -374,14 +398,31 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            <img src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" width="30" class="profile-pic rounded-circle" />
+                            
+                                                              @if(Session::has('image'))
+                                        <img src="{{\App\Models\User::where('id',Session::get('id'))->pluck('image')[0]}}"  alt="user" width="30" class="profile-pic rounded-circle" />
+@else
+  <img src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" width="30" class="profile-pic rounded-circle" />
+@endif
+
+
                         </a>
                         <div class="dropdown-menu dropdown-menu-end user-dd animated flipInY">
                             <div class="d-flex no-block align-items-center p-3 bg-info text-white mb-2">
-                                <div class=""><img src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="60"></div>
+
+
+                                <div class="">
+
+   @if(Session::has('image'))
+                                        <img src="{{\App\Models\User::where('id',Session::get('id'))->pluck('image')[0]}}"  alt="user" width="30" class="profile-pic rounded-circle" />
+@else
+  <img src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" width="30" class="profile-pic rounded-circle" />
+@endif
+
+                                   <!--  <img src="{{ asset('assets/admin/images/users/1.jpg') }}" alt="user" class="rounded-circle" width="60"> --></div>
                                 <div class="ms-2">
-                                    <h4 class="mb-0 text-white">{{Session::get('name')}}</h4>
-                                    <p class=" mb-0">{{Session::get('email')}}</p>
+                                    <h4 class="mb-0 text-white">{{\App\Models\User::where('id',Session::get('id'))->pluck('name')[0]}}</h4>
+                                    <p class=" mb-0">{{\App\Models\User::where('id',Session::get('id'))->pluck('email')[0]}}</p>
                                 </div>
                             </div>
                             <a class="dropdown-item" href="{{ url('/my_profile') }}">
@@ -395,7 +436,7 @@
                             <!--    <i data-feather="log-out" class="feather-sm text-danger me-1 ms-1"></i> Logout-->
                             <!--</a>-->
                             <div class="dropdown-divider"></div>
-                            <div class="pl-4 p-2"><a href="{{ route('signout') }}" class="btn d-block w-100 btn-info rounded-pill"> Logout</a></div>
+                            <div class="pl-4 p-2"><a href="{{ url('signout') }}" class="btn d-block w-100 btn-info rounded-pill"> Logout</a></div>
                         </div>
                     </li>
                             <!-- ============================================================== -->

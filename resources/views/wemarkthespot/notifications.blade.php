@@ -23,7 +23,7 @@
                            <li ><a href="{{url('ac-change-password')}}">Change Password</a></li>
                            <li ><a href="{{url('faqs')}}">FAQs</a></li>
                            <li ><a href="{{url('contact-us')}}">Contact Us</a></li>
-                           <li><a href="{{url('index')}}">Sign Out</a></li>
+                           <li><a href="{{url('/websignout')}}">Sign Out</a></li>
                         </ul>
                      </div>
                   </aside>

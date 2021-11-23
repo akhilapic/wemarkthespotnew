@@ -43,9 +43,21 @@
                      <a class="nav-link" id="contact-us" href="{{url('contact-us')}}">Contact Us</a>
                   </li>
                </ul>
+                @if(Session::has('id'))
+                <div class="nav-right d-none d-xl-block">
+                     <a href="#" class="me-4"><span class="icon-notifications d-flex align-items-center justify-content-center"></span></a>
+                     <a href="{{route('my_account')}}" class="Nav-profile">
+
+                        <img src="{{Session::get('image')}}">
+
+                     </a>
+                  </div>
+               @else
+
                <div class="nav-right d-none d-xl-block">
                   <a href="{{url('signin')}}" id="login" class="btn btn-primary px-4">Sign In / Sign Up</a>
                </div>
+            @endif
             </div>
          </div>
          </nav>

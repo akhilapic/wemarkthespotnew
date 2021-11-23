@@ -34,29 +34,30 @@
         <!-- -------------------------------------------------------------- -->
         <!-- Login box.scss -->
         <!-- -------------------------------------------------------------- -->
-        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url(public/assets/admin/images/background/login-register.jpg) no-repeat center center; background-size: cover;">
-            
+        <!-- <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" style="background:url(public/assets/admin/images/background/login-register.jpg) no-repeat center center; background-size: cover;"> -->
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center" >
 			
 		    <div class="auth-box p-4 bg-white rounded">
-			    <div class="logo_box_login mb-4">
+			    <div class="logo_box_login mb-4 text-center">
 					<a class="navbar-brand" href="javascript:void(0);">
 						<!-- Logo icon -->
 						<b class="logo-icon">
 							<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
 							<!-- Dark Logo icon -->
-							<img src="public/assets/admin/images/logo-icon.png"  alt="homepage" class="dark-logo"/>
+							<img src="{{asset('assets/images/logo.svg')}}"  alt="homepage" class="dark-logo"/>
 						</b>
+                        
 						<!--End Logo icon -->
 						<!-- Logo text -->
 						<span class="logo-text">
 							<!-- dark Logo text -->
-							<img src="public/assets/admin/images/logo-text.png" alt="homepage" class="dark-logo" />
+							<!-- <img src="public/assets/admin/images/logo-text.png" alt="homepage" class="dark-logo" /> -->
 						</span>
 					</a>
 				</div>
                 <div id="loginform">
                     <div class="logo">
-                        <h3 class="box-title mb-3">Sign In</h3>
+                        <h3 class="box-title mb-3 text-center">Sign In</h3>
                     </div>
                     <!-- Form -->
                     @if (\Session::has('msg'))
@@ -79,7 +80,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group mb-4">
-                                    <div class="input-group">
+                                    <div class="input-group align-items-center">
                                  <input type="password" placeholder="Password" id="password" class="form-control" name="password" required>
 
                                         <span class="icon-right fa input_icon fa-eye-slash" id="hidden1" data-name="password"></span>
@@ -103,7 +104,7 @@
                                 <div class="form-group text-center mt-4 mb-3">
                                     <div class="col-xs-12">
                                     <a href="{{ url('/dashboard') }}">
-                                        <button class="btn btn-info d-block w-100 waves-effect waves-light" type="submit">Log In</button>
+                                        <button class="btn btn-info d-block w-100 waves-effect waves-light" type="submit">Sign In</button>
                                     </a>
                                     </div>
                                 </div>
@@ -133,7 +134,7 @@
                             </div>
 							<div class="form-group mb-0 mt-4">
 								<div class="col-sm-12 justify-content-center d-flex">
-									<p><a href="{{ url('/login') }}" class="text-info font-weight-medium ms-1">Login</a></p>
+									<p><a href="{{ url('/login') }}" class="text-info font-weight-medium ms-1">Sign In</a></p>
 								</div>
 							</div>
                         </form>

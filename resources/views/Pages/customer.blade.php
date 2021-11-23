@@ -36,11 +36,11 @@
 							<table id="zero_config" class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th>Sr. No.</th>
+										<th>Id.</th>
 										<th>Name</th>
-										<th>Email</th>
-										<th>Mobile Number</th>
-										
+										<th><div style="width:100px;">Email</div></th>
+										<th>DOB</th>
+										<Th>Created Date (EST)</Th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -55,9 +55,9 @@
 												<span class="ml-2">{{ $user->name }}</span>
 											</a>
 										</td>
-										<td>{{ $user->email }}</td>
-										<td>{{ $user->phone }}</td>
-										
+										<td><div style="width:100px;">{{ $user->email }}</div></td>
+										<td>{{ $user->dob }}</td>
+												<td>{{ $user->created_at }}</td>
 										<td>
 											<div class="table_action">
 												<a href="{{url('/user-view')}}/{{$user->id}}" class="btn btn-success btn-sm list_view infoU"  data-id='"{{ $user->id }}"' data-bs-whatever="@mdo">

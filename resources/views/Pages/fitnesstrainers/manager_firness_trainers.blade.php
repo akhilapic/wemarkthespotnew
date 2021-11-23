@@ -8,12 +8,12 @@
 <div class="page-wrapper">
     <div class="row page-titles">
         <div class="col-md-5 col-12 align-self-center">
-            <h4 class="text-themecolor mb-0">Manage Fitness Trainer</h4>
+            <h4 class="text-themecolor mb-0">Manage Business</h4>
         </div>
         <div class="col-md-7 col-12 align-self-center d-none d-md-block">
             <ol class="breadcrumb mb-0 p-0 bg-transparent fa-pull-right">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active">Manage Fitness Trainer</li>
+                <li class="breadcrumb-item active">Manage Business</li>
             </ol>
         </div>
     </div>
@@ -26,7 +26,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="border-bottom title-part-padding">
-                        <h4 class="card-title mb-0">Manage Fitness Trainer List</h4>             
+                        <h4 class="card-title mb-0">Manage Business List</h4>             
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -50,10 +50,10 @@
                                         <th>Sr. No.</th>
                                         <th><div style="width: 140px;">Name</div></th>
                                         <th>Email</th>
-                                        <th><div style="width: 140px;">Mobile Number</div></th>
-                                        <th>Gender</th>
-                                        <th><div style="width: 140px;">Specialization</div></th>
-                                        <Th>Address </Th>
+                                       <!--  <th><div style="width: 140px;">Mobile Number</div></th> -->
+                                      <!--   <th>Gender</th>
+                                        <th><div style="width: 140px;">Specialization</div></th> -->
+                                        <Th>Business Type </Th>
                                         <th>Status</th>
                                         <th>Approved</th>
                                         <th><div style="width: 140px;">Action</div></th>
@@ -66,16 +66,16 @@
                                         <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email}}</td>
-                                        <td>{{ $item->country_code}} {{ $item->phone}}</td>
+                                    <!--     <td>{{ $item->country_code}} {{ $item->phone}}</td> -->
 
-                                        <td>{{ $item->gender }}</td>
-                                        <td>{{ $item->specialization }}</td>
-                                        <Td>{{$item->address}} </Td>
+                                        <td>{{ $item->business_type }}</td>
+                                       <!--  <td>{{ $item->specialization }}</td>
+                                        <Td>{{$item->address}} </Td> -->
                                         @if($item->status=='1')
                                         <td style="color:Red">Pending</td>
                                         @elseif($item->status=='2')
                                         <td style="color:green;">Approved</td>
-                                        @elseif($item->status=='3')
+                                        @else
                                         <td style="color:orange;">Reject</td>
                                         @endif
                                         <td>
@@ -88,13 +88,13 @@
                                         </td>
                                         <td>
                                             <div class="table_action">
-                                                <a href="{{ route('fitness_trainer_view', $item->id) }}" data-id="{{ $item->id }}"  class="btn btn-success btn-sm list_view infoU"  data-bs-whatever="@mdo">
+                                                <a href="{{ route('manage_business_view', $item->id) }}" data-id="{{ $item->id }}"  class="btn btn-success btn-sm list_view infoU"  data-bs-whatever="@mdo">
                                                     <i class="mdi mdi-eye"></i>
                                                 </a> 
-                                                <a href="{{ route('fitness_trainer_edit', $item->id) }}" data-id="{{ $item->id }}" class="btn btn-info btn-sm list_edit"  data-bs-whatever="@mdo">
+                                                <a href="{{ route('manage_business_edit', $item->id) }}" data-id="{{ $item->id }}" class="btn btn-info btn-sm list_edit"  data-bs-whatever="@mdo">
                                                     <i class="mdi mdi-lead-pencil"></i>
                                                 </a> 
-                                                <a href="{{ route('fitness_trainer_del', $item->id) }}" onclick="return confirm('Are you sure delete this user？')" class="btn btn-danger btn-sm">
+                                                <a href="{{ route('manage_business_del', $item->id) }}" onclick="return confirm('Are you sure delete this user？')" class="btn btn-danger btn-sm">
                                                     <i class="mdi mdi-delete"></i>
                                                 </a> 
                                             </div>
@@ -115,7 +115,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex align-items-center">
-                        <h4 class="modal-title" id="exampleModalLabel1">Set Password</h4>
+                        <h4 class="modal-title" id="exampleModalLabel1">Message</h4>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body ">
@@ -124,9 +124,11 @@
                             <div class="mb-3 col-md-12">
                                 <input type="hidden" id="set_password_id" name ="id"/>
                                 <input type="hidden"  name ="status" value="2"/>
-                                <label for="Name" class="control-label">Enter Password:</label>
-                                <input type="password" required="true" id="passowrd" name="password" class="form-control" id="recipient-name1">
-                                <div class="password_hints" id="pswd_info">
+                                <label for="Name" class="control-label">Notification:</label>
+                               <!--  <input type="password" required="true" id="passowrd" name="password" class="form-control" id="recipient-name1"> -->
+                               <p>Do you want to change the status to Approve?</p>
+
+                             <!--    <div class="password_hints" id="pswd_info">
                                     <h4>Password must meet the following requirements:</h4>
                                     <ul>
                                         <li id="letter" class="invalid letter">At least <strong>one special character</strong></li>
@@ -135,18 +137,45 @@
                                         <li id="number" class="invalid number">At least <strong>one number</strong></li>
                                         <li id="length" class="invalid length">Be at least <strong>8 characters</strong></li>
                                     </ul>
-                                </div>
+                                </div> -->
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light-danger text-danger font-weight-medium" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"  id="submit"  class="btn btn-success btn_submit">Save</button>
+                                    <button type="submit"  id="submit"  class="btn btn-success btn_submit">Approved</button>
                                 </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+ 
     </div>
+            <div class="modal fade done_message" id="b_reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex align-items-center">
+                        <h4 class="modal-title" id="exampleModalLabel1">Message</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body ">
+                        <form class=""  method="post" action="javascript:void(0)" id="rejected_request">
+                            @csrf
+                            <div class="mb-3 col-md-12">
+                                <input type="hidden" id="set_id" name ="id"/>
+                                <input type="hidden"  name ="status" value="3"/>
+                                <label for="Name" class="control-label">Reason:</label>
+                                <input type="text" required="true" id="reason" name="reason" class="form-control" id="recipient-name1">
+                         
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-danger text-danger font-weight-medium" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit"  id="submit"  class="btn btn-success btn_submit">Ok</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     <!-- ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
@@ -158,7 +187,7 @@
     <script>
         function statuschange(value,id)
         {
-        host_url = "/development/fitness/";
+        host_url = "/development/wemarkthespot/";
          //   var value = $(this).val();
                
 //                id = $(this).attr("data-id");
@@ -168,11 +197,20 @@
                     $("#set_password_id").val(id);
                     $("#b_password").modal('show');
                 }
+                else if(value=="3")
+                {
+                    $("#set_id").val(id);
+                    $("#b_reject").modal('show');
+
+                }
                 else
                 {
                     var formData = new FormData();
+                    reason =$("#reason").val();
+
                     formData.append("id", id);
                     formData.append("status", value);
+                    formData.append('reason',reason);
                     formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                     jQuery.ajax({
                         url: host_url + "set_password_fitness_trainer",
@@ -188,7 +226,7 @@
 
                                 setTimeout(function () {
                                     jQuery('.result').html('');
-                                    window.location = host_url + "manager_firness_trainers";
+                                    window.location = host_url + "manager_business";
                                 }, 3000);
                             }
                             else {
@@ -271,8 +309,8 @@
                                 tr += '<div class="table_action">';
 
 
-                                var fitness_trainer_view = "{{route('fitness_trainer_view','" + result[index].id + "')}}";
-                                var fitness_trainer_del = "{{route('fitness_trainer_del','" + result[index].id + "')}}";
+                                var fitness_trainer_view = "{{route('manage_business_view','" + result[index].id + "')}}";
+                                var fitness_trainer_del = "{{route('manage_business_del','" + result[index].id + "')}}";
 
                                 tr += '<a href="fitness_trainer_view/' + result[index].id + '" data-id = ' + result[index].id + ' class="btn btn-success btn-sm list_view infoU"  data-bs-whatever="@mdo"  data-bs-whatever="@mdo"><i class="mdi mdi-eye"></i></a>';
 
@@ -335,11 +373,19 @@
                     $("#set_password_id").val(id);
                     $("#b_password").modal('show');
                 }
+                else if(value=="3")
+                {
+                    $("#set_id").val(id);
+                    $("#b_reject").modal('show');
+
+                }
                 else
                 {
+                     reason =$("#reason").val();
                     var formData = new FormData();
                     formData.append("id", id);
                     formData.append("status", value);
+                    formData.append("reason",reason);
                     formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
                     jQuery.ajax({
                         url: host_url + "set_password_fitness_trainer",
@@ -355,7 +401,7 @@
 
                                 setTimeout(function () {
                                     jQuery('.result').html('');
-                                    window.location = host_url + "manager_firness_trainers";
+                                    window.location = host_url + "manager_business";
                                 }, 3000);
                             }
                             else {

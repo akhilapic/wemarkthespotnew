@@ -37,13 +37,14 @@ class Admin extends Controller
             $request->session()->put('role',$user->role);
             $request->session()->put('use_image',$user->use_image);
             $request->session()->put('phone',$user->phone);
+               $request->session()->put('image',$user->image);
 
           return redirect()->to('/dashboard') ->withSuccess('Signed in');
           
           //  return redirect()->intended('dashboard')
             //            ->withSuccess('Signed in');
         }
-    return redirect()->back()->with('msg', 'Login details are not valid');  
+    return redirect()->back()->with('msg', 'Please enter valid login credentials.');  
         //return redirect("login")->with('','');
     }
 

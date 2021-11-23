@@ -44,7 +44,7 @@
 								<label id="email_error" class="error"></label>
 							</div>
 						
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4" style="display: none;">
 								<label for="username" class="control-label">Mobile Number:</label>
 								<input type="text" id="mobile_number" name="phone" value="{{$user->country_code}} {{$user->phone}}" readonly="true"  class="form-control">
 								{{-- allready exit error --}}
@@ -56,7 +56,7 @@
 								<label for="password" class="control-label">DOB:</label>
 								<input type="text" id="language" name="language"  readonly="true" value="{{$user->dob}}"    class="form-control">
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4" style="display: none;">
 								<label for="password" class="control-label">Phone Number:</label>
 								<input type="text" id="language" name="language"  readonly="true" value="{{$user->country_code}}{{$user->phone}}"    class="form-control">
 							</div>

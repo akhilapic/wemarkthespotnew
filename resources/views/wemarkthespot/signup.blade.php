@@ -146,7 +146,7 @@
                             
                            </div>
                         </form>
-                        <p class="allredy-account my-4 text-center">Already have an account? <a href="{{url('login')}}">Sign In</a></p>
+                        <p class="allredy-account my-4 text-center">Already have an account? <a href="{{url('signin')}}">Sign In</a></p>
                         
                      
                      </div>
@@ -338,12 +338,12 @@ $(document).ready(function() {
 			   
 				success:function(data) { 
                let obj  = JSON.parse(data); 
-				 alert(obj.last_id);
+				// alert(obj.last_id);
              redirecturl = location.href='otp-verifiction/'+obj.last_id;
              $("#okbtn").attr("onclick",redirecturl);
 
             if(obj.status==true){
-               alert(obj.status);
+            //   alert(obj.status);
 					setTimeout(function(){
 				   $("#approval").modal('show');
            //  window.location.href = "emailverification";

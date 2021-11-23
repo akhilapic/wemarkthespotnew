@@ -491,13 +491,13 @@
  */
 
  :root {
-    --main: #54BFCC;
-    --logo-bg: #54BFCC;
-    --btn-bg: #54BFCC;
-    --menu-active: #54BFCC;
-    --pagination: #54BFCC;
-    --checkbox_radio: #54BFCC;
-    --tab_bg: #54BFCC;
+    --main: #000000;
+    --logo-bg: #000000;
+    --btn-bg: #D66821;
+    --menu-active: #D66821;
+    --pagination: #D66821;
+    --checkbox_radio: #D66821;
+    --tab_bg: #D66821;
   }
 /* color css */
 
@@ -570,7 +570,19 @@
 }
 
 
-
+.topbar .top-navbar .navbar-nav>.nav-item>.nav-link img.profile-pic.rounded-circle {
+    height: 40px;
+    object-fit: cover;
+    width: 40px;
+}
+.user-profile .profile-img img {
+    object-fit: cover;
+    border-radius: 50px;}
+.navbar-expand-md .navbar-nav .dropdown-menu img.profile-pic.rounded-circle {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
 
 
 

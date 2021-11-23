@@ -10,9 +10,13 @@ use App\Models\User;
 class userController extends Controller
 {
     public function index()
-    {
-        $users = User::where("role",99)->get();
-        // $users = DB::table('users')->get();
+    {   
+
+        $users = User::where('role',97)->get();
+        //$users = DB::table('users')->get();
+        $users=User::where('id', '!=' , 8)->where('id', '!=' , 72)->get();
+
+
         return view('Pages.customer', compact('users'));
     }
     public function create() {
@@ -290,24 +294,32 @@ class userController extends Controller
             $old_password = $request->old_password;
             $new_password = $request->new_password;
             $id = $request->id;
-            $users =  new User();
+             $users =  new User();
+            
             $user =   $users->where("id",$id)->first();
-        if (!$user) {
-            $result = array("status"=> false, "message"=>"invalid old password");
-            
-         }
-         if (!Hash::check($old_password, $user->password)) {
-            $result = array("status"=> false, "message"=>"invalid old password");
-         }
-         else{
-            
-            $result = array("status"=> false, "message"=>"invalid old password");
-            $data['password'] = Hash::make($new_password);
-          
-            $update = $user->where('id',$id) ->update($data);
-            $result = array("status"=> true, "message"=>"change password Successfully");
-     
-         }
+            if($old_password==$new_password)
+            {
+                  $result = array("status"=> false, "message"=>"Old Password and New Password should not be same");
+            }
+            else
+            {
+                if (!$user) {
+                    $result = array("status"=> false, "message"=>"invalid old password");
+                    
+                 }
+
+                 if (!Hash::check($old_password, $user->password)) {
+                    $result = array("status"=> false, "message"=>"invalid old password");
+                 }
+                 else{
+                    
+                //    $result = array("status"=> false, "message"=>"invalid old password");
+                    $data['password'] = Hash::make($new_password);
+                  
+                    $update = $user->where('id',$id) ->update($data);
+                    $result = array("status"=> true, "message"=>"change password Successfully");
+               }  
+             }
          echo json_encode($result);
         }
     }
@@ -316,11 +328,37 @@ class userController extends Controller
         {
              if(!empty($request->input()))
             {
+                   $image_url=url('public/images/userimage.png');
+              //  dd($request->file());
+                 //  dd($request->input());
                 $id = $request->id;
+                $usreData = DB::table('users')->where('id',$id)->first();
                 $users =  new User();
+                 $fileimage="";
+                   $image_url='';
+                   if($request->hasfile('file'))
+                  {
+                    $file_image=$request->file('file');
+                    $fileimage=md5(date("Y-m-d h:i:s", time())).".".$file_image->getClientOriginalExtension();
+                    $destination=public_path("images");
+                    $file_image->move($destination,$fileimage);
+                    $image_url=url('public/images').'/'.$fileimage;
+                 
+                  }
+                  else
+                  {
+                    $image_url= $usreData->image;
+                  }
                 $user =   $users->where("id",$id)->first();
-                $data['name'] = $request->name;
-                $update = $user->where('id',$id) ->update($data);
+                $data['name'] = isset($request->name)? $request->name: $user->name;
+                $data['image']=$image_url;
+   
+ $update=  User::where('id', $id)
+   
+      ->update($data);
+
+                //$update =DB::table('users')->where('id',$id) ->update($data);
+                //$update = $user->where('id',$id) ->update($data);
                 if($update)
                 {
                     $result = array("status"=> true, "message"=>"Profile Update Successfully");

@@ -29,12 +29,19 @@
                             <div class="card-body">
                                 <center class="mt-4"> 
 								    <div class="profile_img">
-									    <img src="assets/admin/images/users/5.jpg" class="rounded-circle" />
-										<a href="javascript:void(0);" class="camera"><i class="mdi mdi-camera"></i></a>
+                                        @if(Session::has('image'))
+                                        <img src="{{\App\Models\User::where('id',Session::get('id'))->pluck('image')[0]}}" class="rounded-circle" />
+@else
+  <img src="assets/admin/images/users/5.jpg" class="rounded-circle" />
+@endif
+
+                                   
+
+                                    	<!-- <a href="javascript:void(0);" class="camera"><i class="mdi mdi-camera"></i></a> -->
 									</div>
                                     
-                                    <h4 class="card-title mt-2">{{Session::get('name')}}</h4>
-                                    <h6 class="card-subtitle">{{Session::get('email')}}</h6>
+                                    <h4 class="card-title mt-2">{{\App\Models\User::where('id',Session::get('id'))->pluck('name')[0]}}</h4>
+                                    <h6 class="card-subtitle">{{\App\Models\User::where('id',Session::get('id'))->pluck('email')[0]}}</h6>
                                     <!--<div class="row text-center justify-content-md-center">
                                         <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-weight-medium">254</font></a></div>
                                         <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-weight-medium">54</font></a></div>
@@ -45,7 +52,7 @@
                                 <hr> </div>
                             <div class="card-body"> 
 							    <small class="text-muted">Email address </small>
-                                <h6>{{Session::get('email')}}</h6> 
+                                <h6>{{\App\Models\User::where('id',Session::get('id'))->pluck('email')[0]}}</h6> 
 								<!--<small class="text-muted pt-4 db">Phone</small>-->
         <!--                        <h6>{{Session::get('phone')}}</h6> -->
                             </div>
@@ -80,14 +87,20 @@
                                                 <label class="col-md-12">Full Name</label>
                                                 <div class="col-md-12">
                                                    <input type="hidden" name="id" value="{{Session::get('id')}}">
-                                                      <input type="hidden" name="email" value="{{Session::get('email')}}">
-                                                    <input type="text" placeholder="Full Name" class="form-control form-control-line" name="name" value="{{Session::get('name')}}">
+                                                      <input type="hidden" name="email" value="{{\App\Models\User::where('id',Session::get('id'))->pluck('name')[0]}}">
+                                                    <input type="text" placeholder="Full Name" class="form-control form-control-line" name="name" value="{{\App\Models\User::where('id',Session::get('id'))->pluck('name')[0]}}">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="example-email" class="col-md-12">Email</label>
+                                                <label for="example-email" class="col-md-12">Email1</label>
                                                 <div class="col-md-12">
-                                                    <input type="email" placeholder="Email" class="form-control form-control-line" name="email" id="example-email" value="{{Session::get('email')}}" disabled>
+                                                    <input type="email" placeholder="Email" class="form-control form-control-line" name="email" id="example-email" value="{{\App\Models\User::where('id',Session::get('id'))->pluck('email')[0]}}" disabled>
+                                                </div>
+                                            </div>
+                                             <div class="mb-3">
+                                                <label for="example-email" class="col-md-12">Profile Image</label>
+                                                <div class="col-md-12">
+                                                    <input type="file" class="form-control form-control-line" name="file">
                                                 </div>
                                             </div>
                                             <!--<div class="mb-3">-->

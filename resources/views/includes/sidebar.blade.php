@@ -7,10 +7,21 @@
         <!-- User profile -->
         <div class="user-profile position-relative" style="background: url({{ asset('assets/admin/images/background/user-info.jpg') }}) no-repeat;">
             <!-- User profile image -->
-            <div class="profile-img"><img src="{{ asset('assets/admin/images/users/profile.png') }}" alt="user" class="w-100" /></div>
+            <div class="profile-img">
+
+                                  @if(Session::has('image'))
+
+                                        <img src="{{\App\Models\User::where('id',Session::get('id'))->pluck('image')[0]}}" alt="user" class="w-100" />
+@else
+  <img src="{{ asset('assets/admin/images/users/profile.png') }}" alt="user" class="w-100" />
+@endif
+
+                
+
+            </div>
             <!-- User profile text-->
             <div class="profile-text pt-1 dropdown">
-                <a href="#" class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">{{Session::get('name')}}</a>
+                <a href="#" class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">{{\App\Models\User::where('id',Session::get('id'))->pluck('name')[0]}}</a>
                 <div class="dropdown-menu animated flipInY" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="{{ url('/my_profile') }}"><i data-feather="user" class="feather-sm text-info me-1 ms-1"></i> My Profile</a>
                     <div class="dropdown-divider"></div>
@@ -34,19 +45,19 @@
                 <li class="sidebar-item" style="">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/user_list') }}" aria-expanded="false">
                         <i class="mdi mdi-account"></i>
-                        <span class="hide-menu">User</span>
+                        <span class="hide-menu">User Management</span>
                     </a>
                 </li>
-				<li class="sidebar-item">
+				<li class="sidebar-item" style="display: none;">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/workout_plans') }}" aria-expanded="false">
                         <i class="mdi mdi-account"></i>
                         <span class="hide-menu">Manage Workout Plans</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/manager_firness_trainers') }}" aria-expanded="false">
+                <li class="sidebar-item" style="">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/manager_business') }}" aria-expanded="false">
                         <i class="mdi mdi-account"></i>
-                        <span class="hide-menu">Manage Trainers</span>
+                        <span class="hide-menu">Business Management</span>
                     </a>
                 </li>
 				
@@ -72,16 +83,20 @@
                 </li>
 
 
-                <li class="sidebar-item" style="display:none">
+                <li class="sidebar-item" style="">
                     <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="mdi mdi-format-list-bulleted"></i>
-                        <span class="hide-menu">Master</span>
+                        <span class="hide-menu">Category Management</span>
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="{{ url('/category') }}" class="sidebar-link">
+                            <a href="{{ url('/manager_category') }}" class="sidebar-link">
                                 <i class="mdi mdi-adjust"></i>
                                 <span class="hide-menu">Category</span>
+                            </a>
+                             <a href="{{ url('/manage_sub_category') }}" class="sidebar-link">
+                                <i class="mdi mdi-adjust"></i>
+                                <span class="hide-menu">Sub Category</span>
                             </a>
                         </li>
                     </ul>

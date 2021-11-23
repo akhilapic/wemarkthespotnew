@@ -71,16 +71,15 @@ Route::post('/fitness-trainer-data',[App\Http\Controllers\FitnessTrainerControll
 
 Route::post('/set_password_fitness_trainer',[App\Http\Controllers\FitnessTrainerController::class, 'set_password_fitness_trainer'])->name('set_password_fitness_trainer')->middleware('auth');
 
-Route::get('/fitness_trainer_edit/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'fitness_trainer_edit'])->name('fitness_trainer_edit')->middleware('auth');
 
 Route::post('/fitness_trainer_delall',[App\Http\Controllers\FitnessTrainerController::class, 'deleteAll'])->name('fitness_trainer_delall')->middleware('auth');
 
-Route::get('/fitness_trainer_del/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'delete'])->name('fitness_trainer_del')->middleware('auth');
+Route::get('/manage_business_del/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'delete'])->name('manage_business_del')->middleware('auth');
 
 
-Route::get('/fitness_trainer_view/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'fitness_trainer_view'])->name('fitness_trainer_view')->middleware('auth');
+Route::get('/manage_business_view/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'fitness_trainer_view'])->name('manage_business_view')->middleware('auth');
 
-Route::post('/firness_trainer_edit/',[App\Http\Controllers\FitnessTrainerController::class, 'firness_trainer_update'])->name('firness_trainer_edit')->middleware('auth');
+Route::post('/manage_business_editt',[App\Http\Controllers\FitnessTrainerController::class, 'firness_trainer_update'])->name('manage_business_editt')->middleware('auth');
 
 Route::post('/fitness_trainer_filter',[App\Http\Controllers\FitnessTrainerController::class, 'fitness_trainer_filter'])->name('fitness_trainer_filter')->middleware('auth');
 
@@ -150,7 +149,8 @@ Route::post('/workout_plan_update',[App\Http\Controllers\backend\workoutPlansCon
 Route::post('/workout_plans_active_desctive',[App\Http\Controllers\backend\workoutPlansController::class, 'workout_plans_active_desctive'])->name('workout_plans_active_desctive')->middleware('auth');
 
 //--------------------------------FitnessTrainer Start---------------------------------
-Route::get('manager_firness_trainers',[App\Http\Controllers\FitnessTrainerController::class, 'getdata'])->middleware('auth');
+Route::get('manager_business',[App\Http\Controllers\FitnessTrainerController::class, 'getdata'])->middleware('auth');
+Route::get('manager_category',[App\Http\Controllers\FitnessTrainerController::class, 'getdatacategory'])->middleware('auth');
 // });
 // if(empty(session('user_id')) && empty(session('user_id')) && empty(session('user_id'))){
 //    Route::get('/login', [App\Http\Controllers\backend\Admin::class, 'index'])->name('login');
@@ -188,7 +188,7 @@ Route::get('/fitness-survey', function () {
  //Route::DELETE('/user_delete/{id}', [App\Http\Controllers\backend\userController::class, 'delete'])->name('user_delete');
  Route::get('/user_delete/{id}', [App\Http\Controllers\backend\userController::class, 'delete'])->name('user_delete')->middleware('auth');
 //ravi sir
- //Route::post('/signup', 'App\Http\Controllers\Api\userController@signUp'); 
+ //Route::post('/adminsignout', 'App\Http\Controllers\Api\userController@signUp'); 
  Route::post('/verify_otp', 'App\Http\Controllers\Api\userController@verifyOtp')->name('verify_otp');
 //  Route::post('/fitness-survey_three', 'App\Http\Controllers\Api\userController@fitness_survey')->name('fitness-survey_three');  
 
@@ -209,6 +209,8 @@ Route::get('/fitness-survey', function () {
   Route::get('/user_list', [App\Http\Controllers\backend\userController::class, 'index'])->name('user_list')->middleware('auth'); 
  Route::get('/user-view/{id}', 'App\Http\Controllers\backend\userController@userview');
 Route::post('/changeStatus/{id}', [App\Http\Controllers\backend\userController::class, 'changeStatus'])->name('changeStatus')->middleware('auth');
+
+
 // end admin panel
  Route::get('/my-offers', 'App\Http\Controllers\MyoffersController@index');
 // Route::get('my-offers',function(){
@@ -224,7 +226,7 @@ Route::get('/contact-us', 'App\Http\Controllers\ContactUsController@index');
 //Route::get('/login', 'App\Http\Controllers\LoginController@index');
 Route::get('/payment', 'App\Http\Controllers\PaymentsController@index');
 
-Route::get('/my-account', 'App\Http\Controllers\MyAccountController@index');
+// Route::get('/my-account', 'App\Http\Controllers\MyAccountController@index');
 Route::get('/faqs', 'App\Http\Controllers\FaqsController@index');
 
 Route::get('/emailverification/{token}','App\Http\Controllers\LoginController@emailverification');
@@ -254,9 +256,15 @@ Route::get('/otp-verifiction/{id}','App\Http\Controllers\LoginController@otp_ver
 //     return view('wemarkthespot.faqs');
 // });
 
-Route::get('/signin', 'App\Http\Controllers\LoginController@index');
+Route::get('/signin', 'App\Http\Controllers\LoginController@index')->name('signin');
 Route::get('/signup', 'App\Http\Controllers\LoginController@signup');
 Route::post('/signupuser', 'App\Http\Controllers\LoginController@signupuser')->name('signupuser');
+
+
+Route::get('/websignout', 'App\Http\Controllers\LoginController@signout');
+Route::get('/manage_business_edit/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'fitness_trainer_edit'])->name('manage_business_edit')->middleware('auth');
+
+
 
 Route::get('ac-change-password',function(){
     return view('wemarkthespot.ac-change-password');
@@ -273,8 +281,45 @@ Route::get('my-subscription',function(){
 Route::get('change-password',function(){
     return view('wemarkthespot.change-password');
 });
+Route::get('/my_profile', function()
+{
+   return View('Pages.my_profile');
+});
 
+// Route::get('/my_account', function()
+// {
+//    return View('wemarkthespot.my-account');
+// });
 
+Route::post('/verify_otp','App\Http\Controllers\LoginController@verifyOtp')->name('verify_otp');
+Route::post('/manage_business_signin',[App\Http\Controllers\LoginController::class, 'checklogin'])->name('manage_business_signin');
 
+Route::get('/my_account','App\Http\Controllers\LoginController@myaccount')->name('my_account');
 
- //=======================================wemarkthespot AND===============================================================================
+  Route::Post('/my_profile_edit',[App\Http\Controllers\LoginController::class, 'my_profile_edit'])->name('my_profile_edit');
+  Route::get('/add_category', [App\Http\Controllers\FitnessTrainerController::class, 'create'])->middleware('auth');
+
+  Route::post('/category-data', [App\Http\Controllers\FitnessTrainerController::class, 'categorydata'])->name('category-data')->middleware('auth');
+  Route::post('/category-edit', [App\Http\Controllers\FitnessTrainerController::class, 'categoryupdate'])->name('category-edit')->middleware('auth');
+
+  
+  Route::post('/category_status/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'category_status'])->name('category_status')->middleware('auth');
+ 
+  Route::get('/category_delete/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'delete'])->name('category_delete')->middleware('auth');
+  
+  Route::get('/category_edit/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'edit'])->name('category_edit')->middleware('auth');
+  Route::get('/category-view/{id}', 'App\Http\Controllers\FitnessTrainerController@categoryview');
+ 
+  Route::get('manage_sub_category',[App\Http\Controllers\FitnessTrainerController::class, 'getdatasubcategory'])->middleware('auth');
+  Route::get('/add_sub_category', [App\Http\Controllers\FitnessTrainerController::class, 'add_sub_category'])->middleware('auth');
+ Route::post('/subcategory-data', [App\Http\Controllers\FitnessTrainerController::class, 'subcategorydata'])->name('subcategory-data')->middleware('auth');
+ Route::get('/subcategory-view/{id}', 'App\Http\Controllers\FitnessTrainerController@subcategoryview');
+  
+ Route::get('/subcategory_delete/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'subcategory_delete'])->name('subcategory_delete')->middleware('auth');
+  
+ Route::get('/subcategory_edit/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'subcategory_edit'])->name('subcategory_edit')->middleware('auth');
+ Route::post('/subcategory-update', [App\Http\Controllers\FitnessTrainerController::class, 'subcategoryupdate'])->name('subcategory-update')->middleware('auth');
+ 
+ Route::post('/subcategory_status/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'subcategory_status'])->name('subcategory_status')->middleware('auth');
+ 
+  //=======================================wemarkthespot AND===============================================================================

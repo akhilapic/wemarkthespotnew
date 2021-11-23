@@ -43,13 +43,13 @@
 								{{-- allready exit error --}}
 								<label id="email_error" class="error"></label>
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4" style="display: none;">
 								<label for="Email" class="control-label">Password:</label>
 								<input type="password" id="password" name="password" value="{{$fitnesstrainer->password}}" readonly="true" class="form-control">
 								{{-- allready exit error --}}
 								<label id="email_error" class="error"></label>
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4"style="display: none;">
 								<label for="username" class="control-label">Mobile Number:</label>
 								<input type="text" id="mobile_number" name="phone" value="{{$fitnesstrainer->country_code}} {{$fitnesstrainer->phone}}" readonly="true"  class="form-control">
 								{{-- allready exit error --}}
@@ -57,39 +57,39 @@
 							</div>
                            
 							<div class="mb-3 col-md-4">
-								<label for="password" class="control-label">Gender:</label>
-								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->gender}}"    class="form-control">
+								<label for="password" class="control-label">Business Type:</label>
+								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->business_type}}"    class="form-control">
 							</div>
 
 							<div class="mb-3 col-md-4">
-								<label for="password" class="control-label">Specialization:</label>
-								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->specialization}}"    class="form-control">
+								<label for="password" class="control-label">Location:</label>
+								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->location}}"    class="form-control">
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4"style="display: none;">
 								<label for="password" class="control-label">Date Of Birth:</label>
 								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->dob}}"    class="form-control">
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4"style="display: none;">
 								<label for="password" class="control-label">Education::</label>
 								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->education}}"    class="form-control">
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4"style="display: none;">
 								<label for="password" class="control-label">Bio:</label>
 								<input type="text" id="gender" name="gender"  readonly="true" value="{{$fitnesstrainer->bio}}"    class="form-control">
 							</div>
-							<div class="mb-3 col-md-6">
+							<div class="mb-3 col-md-6"style="display: none;">
 								<label for="password" class="control-label">Location/Address:</label>
 								<textarea rows="3" cols="5" class="form-control" readonly="true">{{$fitnesstrainer->address}}</textarea>
 							
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="username" class="control-label">Upload Document:</label>
-								<!-- <img src="{{url('public/upload_doc/'.$fitnesstrainer->upload_doc)}}" height="150" width="100" class="form-control" /> -->
-								<br>
+								<!-- <img src="{{($fitnesstrainer->upload_doc)}}" height="150" width="100" class="form-control" />
+								<br> -->
 									<label class="control-label">{{$fitnesstrainer->upload_doc}}</label>
 							</div>
 						</div>
-						<a type="button" href="{{ url('manager_firness_trainers') }}" class="btn btn-dark fa-pull-left mt-3">Back</a>
+						<a type="button" href="{{ url('manager_business') }}" class="btn btn-dark fa-pull-left mt-3">Back</a>
 						<!-- <input type="submit" id="submit" value="Add" class="btn btn-success btn_submit fa-pull-right mt-3"> -->
 					</form>
 				</div>

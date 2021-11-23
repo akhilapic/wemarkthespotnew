@@ -58,6 +58,191 @@ messages: {
 		});
 	}
 });
+
+$("#category_add1").validate({
+rules: {
+	name: {required: true,},
+	short_information: {required: true,},  
+	image: {required: true},
+	detail_information: {required: true,},
+	},
+messages: {
+	name: {required: "Please enter category",},
+	short_information: {required: "Please enter short information",},   
+	image: {required: "Please select image",},
+	detail_information: {required: "Please enter detail information",},
+},
+	submitHandler: function(form) {
+	   var formData= new FormData(jQuery('#category_add1')[0]);
+	jQuery.ajax({
+			url: host_url+"category-data",
+			type: "post",
+			cache: false,
+			data: formData,
+			processData: false,
+			contentType: false,
+			
+			success:function(data) { 
+			var obj = JSON.parse(data);
+			if(obj.status==true){
+				jQuery('#name_error').html('');
+				jQuery('#email_error').html('');
+				jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+				setTimeout(function(){
+					jQuery('.result').html('');
+					window.location = host_url+"manager_category";
+				}, 2000);
+			}
+			else{
+				if(obj.status==false){
+					jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+				}
+				
+			}
+			}
+		});
+	}
+});
+$("#category_edit1").validate({
+	rules: {
+		name: {required: true,},
+		short_information: {required: true,},  
+		
+		detail_information: {required: true,},
+		},
+	messages: {
+		name: {required: "Please enter category",},
+		short_information: {required: "Please enter short information",},   
+	
+		detail_information: {required: "Please enter detail information",},
+	},
+		submitHandler: function(form) {
+		   var formData= new FormData(jQuery('#category_edit1')[0]);
+		jQuery.ajax({
+				url: host_url+"category-edit",
+				type: "post",
+				cache: false,
+				data: formData,
+				processData: false,
+				contentType: false,
+				
+				success:function(data) { 
+				var obj = JSON.parse(data);
+				if(obj.status==true){
+					jQuery('#name_error').html('');
+					jQuery('#email_error').html('');
+					jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+					setTimeout(function(){
+						jQuery('.result').html('');
+						window.location = host_url+"manager_category";
+					}, 2000);
+				}
+				else{
+					if(obj.status==false){
+						jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+					}
+					
+				}
+				}
+			});
+		}
+	});
+
+
+	$("#subcategory_add1").validate({
+		rules: {
+			category_id: {required: true,},
+			name: {required: true,},
+			short_information: {required: true,},  
+			image: {required: true},
+			detail_information: {required: true,},
+			},
+		messages: {
+			category_id:{required:"Please select sub category",},
+			name: {required: "Please enter sub category name",},
+			short_information: {required: "Please enter short information",},   
+			image: {required: "Please select image",},
+			detail_information: {required: "Please enter detail information",},
+		},
+			submitHandler: function(form) {
+			   var formData= new FormData(jQuery('#subcategory_add1')[0]);
+			jQuery.ajax({
+					url: host_url+"subcategory-data",
+					type: "post",
+					cache: false,
+					data: formData,
+					processData: false,
+					contentType: false,
+					
+					success:function(data) { 
+						var obj = JSON.parse(data);
+						if(obj.status==true){
+							jQuery('#name_error').html('');
+							jQuery('#email_error').html('');
+							jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+							setTimeout(function(){
+								jQuery('.result').html('');
+								window.location = host_url+"manage_sub_category";
+							}, 2000);
+						}
+						else
+						{
+							if(obj.status==false){
+								jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+							}
+						
+						}
+					}
+				});
+			}
+		});
+		$("#subcategory_edit1").validate({
+			rules: {
+				category_id: {required: true,},
+				name: {required: true,},
+				short_information: {required: true,},  
+			
+				detail_information: {required: true,},
+				},
+			messages: {
+				category_id:{required:"Please select sub category",},
+				name: {required: "Please enter sub category name",},
+				short_information: {required: "Please enter short information",},   
+			
+				detail_information: {required: "Please enter detail information",},
+			},
+				submitHandler: function(form) {
+				   var formData= new FormData(jQuery('#subcategory_edit1')[0]);
+				jQuery.ajax({
+						url: host_url+"subcategory-update",
+						type: "post",
+						cache: false,
+						data: formData,
+						processData: false,
+						contentType: false,
+						
+						success:function(data) { 
+							var obj = JSON.parse(data);
+							if(obj.status==true){
+								jQuery('#name_error').html('');
+								jQuery('#email_error').html('');
+								jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+								setTimeout(function(){
+									jQuery('.result').html('');
+									window.location = host_url+"manage_sub_category";
+								}, 2000);
+							}
+							else
+							{
+								if(obj.status==false){
+									jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+								}
+							
+							}
+						}
+					});
+				}
+			});
 $(".add_workout_submitbtn").on("click",function(){
 
 	$(".box_number_of_day").each(function(){
@@ -98,7 +283,48 @@ $(".add_workout_submitbtn").on("click",function(){
 			}
 		});
 	});
-$("#submit_w").on("click",function(){
+	
+	$('.category_status').change(function() {
+		
+		host_url = "/development/wemarkthespot/";
+		var status = $(this).prop('checked') == true ? 1 : 0; 
+		var token = $("meta[name='csrf-token']").attr("content");
+		var user_id = $(this).data('id'); 
+		
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: host_url+'category_status/'+user_id,
+			data: {'_token':  token,'status': status, 'id': user_id},
+			success: function(data){
+			  setTimeout(function(){
+				  jQuery('.result').html('');
+				  window.location = "/manager_category";
+			  }, 1000);
+			}
+		});
+	});
+	$('.subcategory_status').change(function() {
+		
+		host_url = "/development/wemarkthespot/";
+		var status = $(this).prop('checked') == true ? 1 : 0; 
+		var token = $("meta[name='csrf-token']").attr("content");
+		var user_id = $(this).data('id'); 
+		
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: host_url+'subcategory_status/'+user_id,
+			data: {'_token':  token,'status': status, 'id': user_id},
+			success: function(data){
+			  setTimeout(function(){
+				  jQuery('.result').html('');
+				//  window.location = host_url+"manage_sub_category";
+			  }, 1000);
+			}
+		});
+	});
+	$("#submit_w").on("click",function(){
 	var values=[];
 	let selector1;
 	let selector_name;
@@ -645,7 +871,7 @@ rules: {
 				jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
 				setTimeout(function(){
 					jQuery('.result').html('');
-					window.location = host_url+"manager_firness_trainers";
+					window.location = host_url+"manager_business";
 				}, 3000);
 			}
 			else{
@@ -659,15 +885,63 @@ rules: {
 	}
 });
 
+$("#rejected_request").validate({
+rules: {
+	
+	reason: {required: true,},
+	},
+	messages: {
+	reason: {required: "Please enter reason",},
+},
+	submitHandler: function(form) {
+	   var formData= new FormData(jQuery('#rejected_request')[0]);
+	jQuery.ajax({
+			url: host_url+"set_password_fitness_trainer",
+			type: "post",
+			cache: false,
+			data: formData,
+			processData: false,
+			contentType: false,
+			
+			success:function(data) { 
+			var obj = JSON.parse(data);
+			if(obj.status==true){
+				jQuery('#name_error').html('');
+				jQuery('#email_error').html('');
+				jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+				setTimeout(function(){
+					jQuery('.result').html('');
+					window.location = host_url+"manager_business";
+				}, 3000);
+			}
+			else{
+				if(obj.status==false){
+					jQuery('#name_error').html(obj.message);
+					jQuery('#name_error').css("display", "block");
+				}
+			}
+			}
+		});
+	}
+});
 
+	// $("#admin_change_psd").on("click",function(){
+	// 	old_password = $("#user_change_password").val();
+	// 	new_password = $("#new_password").val();
+	// 	if(new_password==old_password)
+	// 	{
+	// 		alert("New Password should be different than old password.");
+	// 		return false;
+	// 	}
+
+	// });
 
 $("#user_change_password").validate({
 	rules: {
 		old_password: {required: true,},
-	
-		new_password: {required: true},
-	
-	
+		
+		new_password: {required: true,},
+		
 		confirm_password : {
 			required: true,
 			equalTo : "#new_password"
@@ -675,10 +949,10 @@ $("#user_change_password").validate({
 	},
 		
 	messages: {
-	
+
 		old_password: {required: "Please enter old password",},
-		new_password:{required:"please enter new password"},
-		confirm_password:{required:"please enter cpnform password"}
+		new_password:{required:"please enter new password",},
+		confirm_password:{required:"please enter confirm  password"}
 	},
 		submitHandler: function(form) {
 		   var formData= new FormData(jQuery('#user_change_password')[0]);
@@ -743,7 +1017,11 @@ $("#update_admin_profile").validate({
 					jQuery('#name_error').html('');
 					jQuery('#email_error').html('');
 					jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>"+obj.message+"</strong></div>");
-					
+				setTimeout(function(){
+						jQuery('.result').html('');
+							location.reload();
+						window.location = host_url+"my_profile";
+					}, 2000);
 				}
 				else{
 					if(obj.status==false){
@@ -794,6 +1072,7 @@ $("#update_admin_profile").validate({
 					jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Profile Update Successfull </strong> </div>");
 					setTimeout(function(){
 						jQuery('.result').html('');
+						location.reload();
 						window.location = host_url+"/user_list";
 					}, 2000);
 				}

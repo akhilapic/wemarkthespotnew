@@ -9,12 +9,12 @@
 <div class="page-wrapper">
     <div class="row page-titles">
         <div class="col-md-5 col-12 align-self-center">
-            <h4 class="text-themecolor mb-0">Fitness Trainer Details</h4>
+            <h4 class="text-themecolor mb-0">Business Details</h4>
 		</div>
         <div class="col-md-7 col-12 align-self-center d-none d-md-block">
             <ol class="breadcrumb mb-0 p-0 bg-transparent fa-pull-right">
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
-                <li class="breadcrumb-item active">Fitness Trainer Details</li>
+                <li class="breadcrumb-item active">Business Details</li>
 			</ol>
 		</div>
 	</div>
@@ -26,10 +26,10 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="border-bottom title-part-padding">
-					<h4 class="card-title mb-0">Edit Fitness Trainer Details</h4>
+					<h4 class="card-title mb-0">Edit Business Details</h4>
 				</div>
 				<div class="card-body min_height">
-					<form name="firness_trainer_edit" id="firness_trainer_edit" method="post" action="javascript:void(0)" enctype="multipart/form-data">
+					<form name="manage_business_edit" id="manage_business_edit" method="post" action="javascript:void(0)" enctype="multipart/form-data">
 						@csrf
 					    <div class="row">
 							<div class="">
@@ -47,56 +47,83 @@
 								{{-- allready exit error --}}
 								<label id="email_error" class="error"></label>
 							</div>
-							<div class="mb-3 col-md-4">
+							<!-- <div class="mb-3 col-md-4" style="display:none;">
 								<label for="Email" class="control-label">Password:</label>
-								<input type="text" id="password"  name="password" value="{{$fitnesstrainer->password}}"  class="form-control">
+								<input type="text" id="password"  name="password" value=""  class="form-control">
 								{{-- allready exit error --}}
 								<label id="email_error" class="error"></label>
-							</div>
-							<div class="mb-3 col-md-3">
+							</div> -->
+							<div class="mb-3 col-md-3"style="">
 								<label for="username" class="control-label">Mobile Number:<span style="color:red">*</span></label>
 								 <input type="hidden" id="country_code" value="{{$fitnesstrainer->country_code}}"  name="country_code"/>
-								<input type="text" id="phone" name="mobile_number" value="{{$fitnesstrainer->phone}}"   class="form-control">
+								<input type="text" id="phone" name="phone" value="{{$fitnesstrainer->phone}}"   class="form-control">
 								{{-- allready exit error --}}
 								<label id="name_error" class="error"></label>
 							</div>
                           
 							<div class="mb-3 col-md-3">
-								<label for="password" class="control-label">Date Of Birth:</label>
-								<input type="date" id="dob" value="{{$fitnesstrainer->dob}}"  name="dob"/>
+								<label for="password" class="control-label">Business Name:</label>
+								<input type="text" id="business_name" value="{{$fitnesstrainer->business_name}}"  class="form-control"  name="business_name"/>
 							</div>
-
 							<div class="mb-3 col-md-3">
+								<label for="password" class="control-label">Location:</label>
+								<input type="text" id="location" value="{{$fitnesstrainer->location}}"  class="form-control"  name="location"/>
+							</div>
+							<div class="mb-3 col-md-3">
+								<label for="password" class="control-label">Opening Hours:</label>
+								<input type="time" id="opeing_hour" value="{{$fitnesstrainer->opeing_hour}}"  class="form-control"  name="opeing_hour"/>
+							</div>
+							<div class="mb-3 col-md-3">
+								<label for="password" class="control-label">Closing Hours:</label>
+								<input type="time" id="closing_hour" value="{{$fitnesstrainer->closing_hour}}"  class="form-control"  name="closing_hour"/>
+							</div>
+							<div class="mb-3 col-md-3">
+                           <div><label class="form-label">Select Business Type</label></div>
+                           <div class="form-check form-check-inline">
+
+            			<input class="form-check-input" @if($fitnesstrainer->business_type=='1') checked @endif type="radio" checked  name="business_type" id="inlineRadio1" value="1" >
+                			 
+                              <label class="form-check-label" for="inlineRadioOptions">Online Only</label>
+                           </div>
+                           <div class="form-check form-check-inline">
+                          
+                           	  <input class="form-check-input" @if($fitnesstrainer->business_type=='2') checked @endif type="radio" name="business_type" id="inlineRadio2" value="2">
+                            
+                              <label class="form-check-label" for="inlineRadioOptions">Physical Location</label>
+                           </div>
+                        </div>
+
+							<!-- <div class="mb-3 col-md-3"style="display:none;">
 								<label for="password" class="control-label">Gender:</label>
 								<select id="gender" name="gender" class="form-control">
 									<option value=''>Select Gender</option>
 									<option value='Male'  @if($fitnesstrainer->gender == 'Male') selected  @endif  >Male</option>
 									<option value='Female' @if($fitnesstrainer->gender == 'Female') selected  @endif >Female</option>
 								</select>
-							</div>
+							</div> -->
 
-							<div class="mb-3 col-md-3 form-group">
+							<!-- <div class="mb-3 col-md-3 form-group"style="display:none;">
 								<label for="specialization" class="control-label">Specialization: <span style="color:red">*</span></label>
-								<input type="text" id="specialization" name="specialization[]"  value="{{$fitnesstrainer->specialization}}"class="form-control">
-							</div>
-							<div class="mb-3 col-md-4">
+								<input type="text" id="specialization" name="specialization[]"  value=""class="form-control">
+							</div> -->
+						<!-- 	<div class="mb-3 col-md-4"style="display:none;">
 								<label for="password" class="control-label">Education:</label>
-								<input type="text" id="education" name="education"  value="{{$fitnesstrainer->education}}"class="form-control">
+								<input type="text" id="education" name="education"  value=""class="form-control">
 							</div>
-							<div class="mb-3 col-md-4">
+							<div class="mb-3 col-md-4"style="display:none;">
 								<label for="password" class="control-label">Location/Address:<span style="color:red">*</span></label>
-								<textarea rows="3" cols="5" class="form-control" placeholder="Location/Address" >{{$fitnesstrainer->address}}</textarea>
-							</div>
-							<div class="mb-3 col-md-4">
+								<textarea rows="3" cols="5" class="form-control" placeholder="Location/Address" ></textarea>
+							</div> -->
+							<!-- <div class="mb-3 col-md-4"style="display:none;">
 								<label for="password" class="control-label">Bio:<span style="color:red">*</span></label>
 								<textarea rows="3" cols="5" class="form-control" placeholder="Bio" name="bio" required>{{$fitnesstrainer->bio}}</textarea>
-							</div>
-							<div style="display:none"> 
+							</div> -->
+							<!-- <div style="display:none"> 
 								<h5>Change Password</h5>
 									<div class="row">
 										<div class="mb-3 col-md-4">
 											<label for="password" class="control-label">Current Password:</label>
-											<input type="text" id="gender" name="old_password"  value="{{$fitnesstrainer->password}}" placeholder="Current Password"    class="form-control">
+											<input type="text" id="gender" name="old_password"  value="" placeholder="Current Password"    class="form-control">
 										</div>
 										<div class="mb-3 col-md-4">
 											<label for="password" class="control-label">New Password:</label>
@@ -108,17 +135,17 @@
 										</div>
 							</div>
 
-									<div class="mb-3 col-md-6">
+									<div class="mb-3 col-md-6"style="display:none;">
 								<label for="username" class="control-label">Upload Document:</label>
-								<img src="{{url('public/upload_doc/'.$fitnesstrainer->upload_doc)}}" height="150" width="100" class="form-control" />
-								<input type="hidden" name="upload_doc" name ="old_upload_doc" value="{{$fitnesstrainer->upload_doc}}">
+								<img src="" height="150" width="100" class="form-control" />
+								<input type="hidden" name="upload_doc" name ="old_upload_doc" value=>
 								<input type="file" name="upload_doc" class="form-control">
 							</div>
 
 
-							</div>
+							</div> -->
 						</div>
-						<a type="button" href="{{ url('manager_firness_trainers') }}" class="btn btn-dark fa-pull-left mt-3">Back</a>
+						<a type="button" href="{{ url('manager_business') }}" class="btn btn-dark fa-pull-left mt-3">Back</a>
 						 <input type="submit"  value="Save" class="btn btn-success btn_submit_tranning fa-pull-right mt-3"> 
 					</form>
 				</div>
@@ -132,7 +159,7 @@
 
     <script src="{{ asset('assets/js/customvalidation.js') }}"></script>
 
-    <script src="{{asset('assets/build/js/intlTelInput.js')}}"></script>
+  <!--   <script src="{{asset('assets/build/js/intlTelInput.js')}}"></script> -->
     <script type="text/javascript">
     	$(function(){
     		$(".btn_submit_tranning").on("click",function(){
@@ -150,7 +177,50 @@
       });
     	});
     </script>
+    <script>
+    	
+ $("#manage_business_edit").validate({
+rules: {
+	name:{required:true,},
+	},
+	messages: {
+		name: {required: "Please enter name",},
+	},
+	submitHandler: function(form) {
+	   var formData= new FormData(jQuery('#manage_business_edit')[0]);
+	   alert('hh');
+	jQuery.ajax({
+			url: host_url+"manage_business_editt",
+			type: "post",
+			cache: false,
+			data: formData,
+			processData: false,
+			contentType: false,
+			
+			success:function(data) { 
+			var obj = JSON.parse(data);
+			if(obj.status==true){
+				jQuery('#name_error').html('');
+				jQuery('#email_error').html('');
+				jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+				setTimeout(function(){
+					jQuery('.result').html('');
+					window.location = host_url+"manager_business";
+				}, 3000);
+			}
+			else{
+				if(obj.status==false){
+					jQuery('#name_error').html(obj.message);
+					jQuery('#name_error').css("display", "block");
+				}
+			}
+			}
+		});
+	}
+});
+    </script>
    <script>
+   	
     var input = document.querySelector("#phone");
     window.intlTelInput(input, {
       // allowDropdown: false,

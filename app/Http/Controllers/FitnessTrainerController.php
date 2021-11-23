@@ -9,23 +9,83 @@ use Str;
 use Carbon\Carbon;
 use Hash;
 use App\Models\User;
+use App\Models\Categorys;
+use App\Models\SubCategorys;
 use App\Models\FitnessTrainers;
 use PHPMailer\PHPMailer\PHPMailer; 
 use PHPMailer\PHPMailer\SMTP; 
+use PHPMailer\PHPMailer\Exception;
 use Validator;
+
 class FitnessTrainerController extends Controller
 {
     public function index()
     {
+        date_default_timezone_set("Asia/Kolkata");
         $data['active']="beaTrainer";
         return view('BeaTrainer',$data);
     }
 
     public function getdata()
     {
-      $fitnesstrainer  =  User::where("role","97")->orderBy('id', 'DESC')->get();
+      $fitnesstrainer  =  User::where("role",99)->orderBy('id', 'DESC')->get();
       return view('Pages.fitnesstrainers.manager_firness_trainers', compact('fitnesstrainer'));
     }
+    public function getdatacategory()
+    {
+         $categorys  =  Categorys::orderBy('id', 'DESC')->get();
+     
+     return view('Pages.fitnesstrainers.manager_category',compact('categorys'));   
+    }
+    public function create() { // create category
+      return view('Pages.add_category');
+   }
+   public function categorydata(Request $request)
+   {
+    //dd($request->input());
+        if($request->input())
+        {
+            $image_url=url('public/images/userimage.png');
+            $Validation = Validator::make($request->all(),[
+                   'name' => 'unique:categorys',
+            ]);
+            if($Validation->fails())
+            {
+                  $result=array('status'=>false,'message'=> 'categorys name Already exists.' ,'error'=>$Validation->errors());
+            }
+            else
+            {
+                $fileimage="";
+                $image_url='';
+                if($request->hasfile('image'))
+               {
+                 $file_image=$request->file('image');
+                 $fileimage=md5(date("Y-m-d h:i:s", time())).".".$file_image->getClientOriginalExtension();
+                 $destination=public_path("images");
+                 $file_image->move($destination,$fileimage);
+                 $image_url=url('public/images').'/'.$fileimage;
+              
+               }
+               else
+               {
+                 $image_url= $usreData->image;
+               }
+                $date = date("Y-m-d h:i:s", time());
+                $detail_Information = $request->detail_information;
+
+                $data = ['name'=>$request->name,'short_information'=>$request->short_information,'detail_information'=>$detail_Information,'image'=>$image_url,'updated_at'=>date("Y-m-d h:i:s", time()),'created_at'=>date("Y-m-d h:i:s", time())];
+            
+                $insertRecord=    Categorys::create($data);
+                if($insertRecord){
+                    $result = array('status'=> true, 'message'=>'Category Added  successfully.');
+                   }
+                   else{
+                    $result = array('status'=> false, 'message'=>'Profile Update  Failed.');
+                   }
+            }
+            echo json_encode($result);
+        }
+   }
     /*
     public function fitness_trainer_dataold(Request $request)
     {
@@ -149,7 +209,7 @@ public function fitness_trainer_data(Request $request)
         }
         echo json_encode($result);
     }
-    public function set_password_fitness_trainer(Request $request)
+    public function set_password_fitness_trainerold(Request $request)
     {
          $fitnesstrainer  =  new User();
 
@@ -182,6 +242,12 @@ public function fitness_trainer_data(Request $request)
                     }
                     else if($request->status=='2')
                     {
+                         $subject="Verify Your Account Email";
+                        $message=url('/signin')."Your Business account on We Mark the Spot has been Approved. You can now signin to your account.
+                                    Click here .";
+                         if($this->sendMail($request->email,$subject,$message)){
+                        $result=array('status' => true,'message' =>"Verify Your Account Email");
+                    }
                         $result=array('status'=>true,'message'=> 'Your Request Approved Successfully');
                     }
                 }
@@ -197,7 +263,54 @@ public function fitness_trainer_data(Request $request)
             echo json_encode($result);
         }
     }
-
+ public function set_password_fitness_trainer(Request $request)
+    {
+         $fitnesstrainer  =  new User();
+  // dd($request->input());
+        if(!empty($request->input()))
+        {
+            if(!empty($request->status))
+            {
+                $id = $request->id;
+                $userdata = User::where('id',$id)->first();
+            //    dd($userdata->email);
+                if($request->status=='2')
+                {
+                    $data['status'] =2;
+                    $subject="Your Request";
+                    $message="Your Request Approved By Admin .";
+                    $this->sendMail($userdata->email,$subject,$message);
+                }
+                else
+                {
+                    if($request->status==3)
+                    {
+                        $subject="Your Request";
+                         $message="Your registration on We Mark the Spot platform has been rejected  "."Reason:".$request->reason;
+                        $this->sendMail($userdata->email,$subject,$message);
+                    }
+                    $data['reason'] =$request->reason;
+                    $data['status'] =$request->status;
+                  
+                }
+                $data['updated_at'] = date("Y-m-d h:i:s");
+                $update = $fitnesstrainer->where('id',$id) ->update($data);
+                if($update){
+                        $result=array('status'=>true,'message'=> 'Your Request Approved Successfully');
+                    }
+                }
+                else{
+                $result=array('status'=>false,'message'=> ' Fails.');
+                } 
+            }
+            else
+            {
+                echo "reject pending";
+            }
+           
+            echo json_encode($result);
+        }
+    
     public function fitness_trainer_edit(Request $request,$id)
     {
         $fitnesstrainer  =  User::where("id",$id)->first();
@@ -206,7 +319,7 @@ public function fitness_trainer_data(Request $request)
         $mobile_number = $fitnesstrainer->phone;
 
         $fitnesstrainer->phone = preg_replace("/^\+?{$country_code}/", '',$mobile_number);
-      
+        //dd($fitnesstrainer);
          return view('Pages.fitnesstrainers.fitness_trainer_edit', compact('fitnesstrainer'));
     }
 
@@ -237,17 +350,18 @@ public function fitness_trainer_data(Request $request)
 
 
     public function  delete(Request $request,$id){ 
-      $FitnessTrainers = new User();
-         $getdata = $FitnessTrainers->select("upload_doc")->where("id",$id)->first();
-            if(!is_null($getdata->upload_doc))
+        
+      $Categorys = new Categorys();
+         $getdata = $Categorys->select("image")->where("id",$id)->first();
+            if(!is_null($getdata->image))
             {
-                if(file_exists(public_path('upload_doc/'.$getdata->upload_doc)))
+                if(file_exists(public_path('images/'.$getdata->image)))
                 {
-                     unlink(public_path('upload_doc/'.$getdata->upload_doc));
+                     unlink(public_path('images/'.$getdata->image));
                 }
             }
-        $FitnessTrainers->where("id",$id)->delete();
-        return redirect('/manager_firness_trainers');
+        $Categorys->where("id",$id)->delete();
+        return redirect('/manager_category');
     }
 
     public function fitness_trainer_view(Request $request,$id)
@@ -265,51 +379,51 @@ public function fitness_trainer_data(Request $request)
         {
             $data =array();
             $id = $request->id;
-            $old_password = $request->old_password;
-            $old_upload_doc = $request->old_upload_doc;
+            // $old_password = $request->old_password;
+            // $old_upload_doc = $request->old_upload_doc;
 
             $fitnesstrainer  =  $fitnesstrainer->where('id',$id)->first();
             
-            if(!empty($old_password))
-            {
-                if($fitnesstrainer->password==$old_password)
-                {
-                    $fitnesstrainer->passowrd = $request->password;
-                }
-            }
-                $fileimage="";
-                    $image_url='';
+            // if(!empty($old_password))
+            // {
+            //     if($fitnesstrainer->password==$old_password)
+            //     {
+            //         $fitnesstrainer->passowrd = $request->password;
+            //     }
+            // }
+                // $fileimage="";
+                //     $image_url='';
                 
-                    if($request->hasfile('upload_doc'))
-                    {
-                        if(!is_null($old_upload_doc))
-                        {
-                            if(file_exists(public_path('upload_doc/'.$old_upload_doc)))
-                            {
-                                unlink(public_path('upload_doc/'.$old_upload_doc));
-                            }
-                        }
-                        $file_image=$request->file('upload_doc');
-                        $fileimage=$file_image->getClientOriginalName();
-                        //$fitnesstrainer->upload_doc = $fileimage;
-                        $data['upload_doc'] =$fileimage;
-                        $destination=public_path("upload_doc");
-                        $file_image->move($destination,$fileimage);
-                    }   
-                    else
-                    {
-                        $data['upload_doc'] =($fileimage)? $fileimage:$fitnesstrainer->upload_doc;
-                    }
+                //     if($request->hasfile('upload_doc'))
+                //     {
+                //         if(!is_null($old_upload_doc))
+                //         {
+                //             if(file_exists(public_path('upload_doc/'.$old_upload_doc)))
+                //             {
+                //                 unlink(public_path('upload_doc/'.$old_upload_doc));
+                //             }
+                //         }
+                //         $file_image=$request->file('upload_doc');
+                //         $fileimage=$file_image->getClientOriginalName();
+                //         //$fitnesstrainer->upload_doc = $fileimage;
+                //         $data['upload_doc'] =$fileimage;
+                //         $destination=public_path("upload_doc");
+                //         $file_image->move($destination,$fileimage);
+                //     }   
+                    // else
+                    // {
+                    //     $data['upload_doc'] =($fileimage)? $fileimage:$fitnesstrainer->upload_doc;
+                    // }
                 $data['name']=($request->name)? $request->name:$fitnesstrainer->name;
                 $data['email']=($request->email)? $request->email:$fitnesstrainer->email;
-                $data['password']=($request->password)? $request->password:$fitnesstrainer->password;
-                $data['phone']=($request->mobile_number)? $request->country_code.$request->mobile_number:$fitnesstrainer->phone;
-                $data['gender']=($request->gender)? $request->gender:$fitnesstrainer->gender;
-                $data['dob']=($request->dob)? $request->dob:$fitnesstrainer->dob;
-                $data['specialization']=($request->specialization)? implode(",",$request->specialization):$fitnesstrainer->specialization;
-                $data['address']=($request->adaddressd)? $request->address:$fitnesstrainer->address;
-                $data['education'] =($request->education)? $request->education:$fitnesstrainer->education;
-                $data['bio'] =($request->bio)? $request->bio:$fitnesstrainer->bio;
+                // $data['password']=($request->password)? $request->password:$fitnesstrainer->password;
+                // $data['phone']=($request->mobile_number)? $request->country_code.$request->mobile_number:$fitnesstrainer->phone;
+                $data['business_type']=($request->business_type)? $request->business_type:$fitnesstrainer->business_type;
+                // $data['dob']=($request->dob)? $request->dob:$fitnesstrainer->dob;
+                // $data['specialization']=($request->specialization)? implode(",",$request->specialization):$fitnesstrainer->specialization;
+                // $data['address']=($request->adaddressd)? $request->address:$fitnesstrainer->address;
+                // $data['education'] =($request->education)? $request->education:$fitnesstrainer->education;
+                // $data['bio'] =($request->bio)? $request->bio:$fitnesstrainer->bio;
 
                 $data['updated_at'] = date("Y-m-d h:i:s");
                 $update = $fitnesstrainer->where('id',$id) ->update($data);
@@ -531,7 +645,7 @@ public function fitness_trainer_data(Request $request)
                 $mail->isHTML();
                 $mail->Body=$message;
                 $mail->setFrom("raviappic@gmail.com");
-                $mail->FromName="Fitness Final";
+                $mail->FromName="Wemark The Spot";
                 
                 if($mail->send())
                 {   
@@ -711,5 +825,271 @@ public function fitness_trainer_data(Request $request)
             }
        
         } 
+    }
+
+
+     function sendVerifyEmail(Request $request){
+                 $validate=Validator::make($request->all(),[
+                        'email' => 'required|email',
+                      ]);
+                         if($validate->fails()){
+                        $result=array('status' =>'Failed',"success" => false,'message' =>'Validation failed','error' =>$validate->errors());
+                 }else{
+                        $email_status=User::where('email',$request->email)->first();
+                        if(is_null($email_status)){
+                        $result=array('status' => false,'status' => false,'message' =>"Email does not exist");
+                    }
+                 else{
+                    
+                    $subject="Verify Your Account Email";
+                    $message=url('signin')."Your Business account on We Mark the Spot has been Approved. You can now signin to your account.
+                                    Click here .";
+                    if($this->sendMail($request->email,$subject,$message)){
+                        $result=array('status' => true,'message' =>"Password reset link send to your email address");
+                    }else{
+                        $result=array('status' => false,'message' =>"Something Went Wrong");
+                    }
+                   
+            }
+    }
+    
+    echo json_encode($result);
+}
+
+    public function category_status(Request $request)
+    {
+        
+        $id = $request->id;
+        $status = $request->status;
+        $data = ['status'=>$status];
+        $update =  Categorys::where('id',$id)->update($data);
+        if($update){
+            $result = array("status"=> true, "message"=>"update status");
+        }
+        else{
+            $result = array("status"=> false, "message"=>"not update status");
+        }
+    }
+
+    public function edit($id)
+    {
+        $categorys =  Categorys::where('id',$id)->first();
+        if(!empty($categorys))
+        {
+        //    dd($categorys);
+            return view('Pages.edit_category',compact('categorys'));
+        }
+        
+    }
+    public function categoryupdate(Request $request)
+    {
+        if(!empty($request->id))
+        {
+               $categorysData = Categorys::where('id', $request->id)->first();
+                $fileimage="";
+                $image_url='';
+                if($request->hasfile('image'))
+                {
+                    $file_image=$request->file('image');
+                    $fileimage=md5(date("Y-m-d h:i:s", time())).".".$file_image->getClientOriginalExtension();
+                    $destination=public_path("images");
+                    $file_image->move($destination,$fileimage);
+                    $image_url=url('public/images').'/'.$fileimage;
+                }
+                else
+                {
+                    $image_url= $categorysData->image;
+                }
+                // echo $image_url;
+                // exit;
+                $updateData = array(
+                'name'=>isset($request->name)? $request->name : $categorysData->name,
+                'short_information'=>isset($request->short_information)? $request->short_information : $categorysData->short_information,
+                'detail_information'=>isset($request->detail_information)? $request->detail_information : $categorysData->detail_information,
+                    'image'=>$image_url,
+                    'updated_at'=>date("Y-m-d h:i:s", time())
+                );
+                $updateRecord = Categorys::where('id',$categorysData->id)->update($updateData);
+                if($updateRecord){
+                    $result = array('status'=> true, 'message'=>'Category Update  successfully.');
+                }
+                else{
+                $result = array('status'=> false, 'message'=>'Category Update  Failed.');
+                }
+        }
+        else
+        {
+             $result = array('status'=> false, 'message'=>'No Record Found');
+        }
+         echo json_encode($result);
+    }
+    public function categoryview($id)
+    {
+        $categorys = Categorys::where('id', $id)->first();
+        return view('Pages.category_view',compact('categorys'));
+    }
+
+    public function getdatasubcategory()
+    {
+        $subcategorys = SubCategorys::join('categorys', 'categorys.id', '=', 'sub_categorys.category_id')
+              ->get(['sub_categorys.*', 'categorys.name as category_name']);
+        //      dd($subcategorys);
+        return view('Pages.fitnesstrainers.manage_subcategory',compact('subcategorys'));   
+    }
+    public function add_sub_category()
+    {
+        $categorylist = Categorys::where('status', 0)->get();
+    //    dd($categorylist);
+        return view("Pages.add_sub_category",compact('categorylist'));
+    }
+
+    public function subcategorydata(Request $request)
+    {
+        if($request->input())
+        {
+            $name = $request->name;
+            $res =SubCategorys::where('name',$name)->first();
+        
+            $image_url=url('public/images/userimage.png');
+            
+            if(!empty($res))
+            {
+                  $result=array('status'=>false,'message'=> 'sub categorys name Already exists.' ,'error'=>$Validation->errors());
+            }
+            else
+            {
+                $fileimage="";
+                $image_url='';
+                if($request->hasfile('image'))
+               {
+                 $file_image=$request->file('image');
+                 $fileimage=md5(date("Y-m-d h:i:s", time())).".".$file_image->getClientOriginalExtension();
+                 $destination=public_path("images");
+                 $file_image->move($destination,$fileimage);
+                 $image_url=url('public/images').'/'.$fileimage;
+              
+               }
+               else
+               {
+                 $image_url= $usreData->image;
+               }
+                $date = date("Y-m-d h:i:s", time());
+                $detail_Information = $request->detail_information;
+               
+                $data = ['category_id'=>$request->category_id,'name'=>$request->name,'short_information'=>$request->short_information,'detail_information'=>$detail_Information,'image'=>$image_url,'updated_at'=>date("Y-m-d h:i:s", time()),'created_at'=>date("Y-m-d h:i:s", time())];
+             //  dd($data);
+                $insertRecord=    SubCategorys::create($data);
+                if($insertRecord){
+                    $result = array('status'=> true, 'message'=>'Sub Category Added  successfully.');
+                   }
+                   else{
+                    $result = array('status'=> false, 'message'=>'Sub Category Added  Failed.');
+                   }
+            }
+            echo json_encode($result);
+        }
+    }
+    public function subcategoryview($id)
+    {
+//        $subcategorys = SubCategorys::where('id', $id)->first();
+
+        $subcategorys = SubCategorys::join('categorys', 'categorys.id', '=', 'sub_categorys.category_id')
+              ->get(['sub_categorys.*', 'categorys.name as category_name'])->where('id',$id);
+    
+        return view('Pages.subcategory_view',compact('subcategorys'));
+    }
+
+    public function subcategory_delete($id)
+    {
+        $Categorys = new SubCategorys();
+        $getdata = SubCategorys::where("id",$id)->first();
+    //    dd($getdata->image);
+           if(!is_null($getdata->image))
+           {
+               if(file_exists(public_path('images/'.$getdata->image)))
+               {
+                    unlink(public_path('images/'.$getdata->image));
+               }
+           }
+       $Categorys->where("id",$id)->delete();
+       return redirect('/manage_sub_category');
+    }
+
+    public function subcategory_edit($id)
+    {
+        //dd(date("Y-m-d h:i:s"));
+        $subcategorys = SubCategorys::where('id',$id)->first();
+        $categorylist = Categorys::where('status', 0)->get();
+    //    dd($subcategorys->category_id);
+        // foreach($categorylist as $list)
+        // {
+        //     if($list->id == $subcategorys->category_id)
+        //     {
+        //         print_r($list->name);
+        //     }
+        //     else{
+        //         print_r($list->name);
+        //     }
+        // }
+        // exit;
+        return view('Pages.edit_subcategory',compact('subcategorys','categorylist'));
+    }
+    public function subcategoryupdate(Request $request)
+    {
+        if(!empty($request->id))
+        {
+               $subcategorysData = SubCategorys::where('id', $request->id)->first();
+                $fileimage="";
+                $image_url='';
+                if($request->hasfile('image'))
+                {
+                    $file_image=$request->file('image');
+                    $fileimage=md5(date("Y-m-d h:i:s", time())).".".$file_image->getClientOriginalExtension();
+                    $destination=public_path("images");
+                    $file_image->move($destination,$fileimage);
+                    $image_url=url('public/images').'/'.$fileimage;
+                }
+                else
+                {
+                    $image_url= $subcategorysData->image;
+                }
+                date_default_timezone_set("Asia/Kolkata"); 
+                $updateData = array(
+                
+                    'category_id'=>isset($request->category_id)? $request->category_id : $subcategorysData->category_id,
+                    'name'=>isset($request->name)? $request->name : $subcategorysData->name,
+                    'short_information'=>isset($request->short_information)? $request->short_information : $subcategorysData->short_information,
+                    'detail_information'=>isset($request->detail_information)? $request->detail_information : $subcategorysData->detail_information,
+                    'image'=>$image_url,
+                    'updated_at'=>date("Y-m-d h:i:s", time())
+                    );
+                //    dd($updateData);
+                $updateRecord = SubCategorys::where('id',$request->id)->update($updateData);
+                if($updateRecord){
+                    $result = array('status'=> true, 'message'=>'SubCategory Update  successfully.');
+                }
+                else{
+                $result = array('status'=> false, 'message'=>'SubCategory Update  Failed.');
+                }
+        }
+        else
+        {
+             $result = array('status'=> false, 'message'=>'No Record Found');
+        }
+         echo json_encode($result);
+    }
+    public function subcategory_status(Request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $data = ['status'=>$status];
+        $update =  SubCategorys::where('id',$id)->update($data);
+        if($update){
+            $result = array("status"=> true, "message"=>"update status");
+        }
+        else{
+            $result = array("status"=> false, "message"=>"not update status");
+        }
+        echo json_encode($result);
     }
 }

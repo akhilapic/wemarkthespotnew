@@ -29,11 +29,15 @@
                      <div class=" text-center mb-4">
                         <h1 class="title">Sign in</h1>
                         <p>Sign in to your account</p>
+                        <span id="msg_error"></span>
                      </div>
+
                     
                      
-                     <form action="{{url('my-account')}}">
-                        <div class="thumb-up mb-5">
+                     <form action="javascript:void(0);" id="manage_business_signin" method="post" enctype="multipart/form-data">
+                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    
+                       <!--  <div class="thumb-up mb-5">
                            <div class="profile-box d-flex flex-wrap align-content-center">
                               <img class="profile-pic" src="{{asset('assets/images/user-thumb.png')}}">
                            </div>
@@ -41,14 +45,14 @@
                               <button type="button" value="login" class="btn upload-button"><span class="icon-camera"></span></button>
                               <input class="file-upload" type="file" accept="image/*">
                            </div>
-                        </div>
+                        </div> -->
                         <div class="mb-3">
                            <label for="emailnumber" class="form-label">Email Address</label>
-                           <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Email">
+                           <input type="text" class="form-control" name="email" id="Email1" aria-describedby="emailHelp" placeholder="Enter Email">
                         </div>
                         <div class="mb-3">
                            <label for="password" class="form-label">Password</label>
-                           <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter Password">
+                           <input type="password" class="form-control" name="password" id="Password1" placeholder="Enter Password">
                         </div>
                         <div class="mb-2 form-check ps-0">
                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -72,5 +76,69 @@
       <script src="{{asset('assets/js/popper.min.js')}} "></script>
       <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
       <script src="{{asset('assets/js/custom.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+      <script>
+         $("#manage_business_signin").validate({
+rules: {
+   password: {required: true,},
+   email: {required: true,email: true,},  
+
+   },
+
+messages: {
+   password: {required: "Please enter Password",},
+   email: {required: "Please enter valid Email",email: "Please enter valid Email",},   
+
+},
+   submitHandler: function(form) {
+      var formData= new FormData(jQuery('#manage_business_signin')[0]);
+     
+      // u = host_url+"manage_business_signin";
+     
+   jQuery.ajax({
+         url: "{{route('manage_business_signin')}}",
+         type: "post",
+         cache: false,
+         data: formData,
+         processData: false,
+         contentType: false,
+         
+         success:function(data) { 
+         var obj = JSON.parse(data);
+         if(obj.status==true){
+            window.location.href= "{{route('my_account')}}";
+
+         }
+         else{
+               //alert(obj.status);
+             if(obj.status==false){
+               if(obj.status==false)
+               {
+               //   alert(obj.message);
+                  jQuery('#msg_error').html('');
+                  jQuery('#msg_error').html(obj.message);
+            //jQuery('#msg_error').css("display", "block");
+            //    jQuery('#msg_error').css({'display','block','color':'red'});
+              $("#msg_error").css({"display": "block", "color": "red"}); 
+               }
+               
+               else
+               {
+                  jQuery('#msg_error').css("display", "none");
+               }
+               
+            }
+            else{
+               jQuery('#mobile_number_error').html('');
+               jQuery('#email_error').html('');
+            }
+         }
+         }
+      });
+   }
+});
+
+
+      </script>
    </body>
 </html>

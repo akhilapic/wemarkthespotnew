@@ -25,7 +25,7 @@ class userController extends Controller
 
     public function logincheck(Request $request)
     {
-
+ date_default_timezone_set('Asia/Kolkata');
         $email = $request->email;
         
         if(!isset($email))
@@ -49,7 +49,7 @@ class userController extends Controller
                         DB::table('users')->where('email', $email)->update($data);
                          $image_url=url('public/images/userimage.png');
                         $emailExist->image =  isset($emailExist->image)? $emailExist->image : $image_url ;
-                        $result=array('status'=>true,'message'=> 'Login successfully.','data'=>$emailExist);     
+                        $result=array('status'=>true,'message'=> 'Login Successful.','data'=>$emailExist);     
                     }
                     else
                     {
@@ -63,7 +63,7 @@ class userController extends Controller
             }
             else
             {
-                $result=array('status'=>false,'message'=> 'Invalid Email address');   
+                $result=array('status'=>false,'message'=> 'User not registered');   
             }
             
         }
@@ -71,51 +71,69 @@ class userController extends Controller
     }
 
     //user register 
-    // public function userRegister(Request $request){
-        
-    //     $Validation = Validator::make($request->all(),[
-    //         'username' => 'required',
-    //         'password' => 'required',
-    //            'email' => 'required|email|unique:users',
-                
-    //     ]);
+    public function userRegister(Request $request){
+        date_default_timezone_set('Asia/Kolkata');
+        $username = $request->username;
+        $email = $request->email;
+     
 
-    //    if($Validation->fails())
-    //     {
-    //           $result=array('status'=>false,'message'=> 'validate Failed.' ,'error'=>$Validation->errors());
-    //     }
-    //     else
-    //     {
-    //         $username = $request->username;
-    //         $email = $request->email;
-    //         $image_url=url('public/images/userimage.png');
-    //         $password = Hash::make($request->password);
-    //          $otp =  rand(1000,9999);
-    //             $date = date("Y-m-d h:i:s", time());
-    //             $data = ['username'=>$username,'name'=>$username,'image'=>$image_url,'email'=>$email,'password'=>$password,'status'=>1,'role'=>97];
-    //              $subject="Register Otp";
-    //             $message = "Register Otp OTP ". $otp;
+        $emailExist =DB::table('users')->where('email', $email)->count();
+        $userExist =DB::table('users')->where('username', $username)->count();
+         if($emailExist > 0){
+            $result=array('status'=>false,'message'=> 'Email address already registered');
+        }else{
+              $username = $request->username;
+            $email = $request->email;
+
+            $image_url=url('public/images/userimage.png');
+            $password = Hash::make($request->password);
+             $otp =  rand(1000,9999);
+                $date = date("Y-m-d h:i:s", time());
+                 $data = ['username'=>$username,'name'=>$username,'image'=>$image_url,'email'=>$email,'password'=>$password,'status'=>1,'role'=>97];
+            $updated = DB::table('temp_users')->where('email', $request->email)->first();
+            $up_otp = ['otp'=>$otp,'email'=>$email, 'create_at'=>$date, 'update_at'=>$date];
+            if(!empty($updated))
+            {
+                DB::table('temp_users')->where('email', $request->email)->delete();
+                
+                  DB::table('password_otp')->where('email', $request->email)->delete();
+                  $subject="Register Otp";
+                $message = "Register Otp OTP ". $otp;
             
+                $update = DB::table('temp_users')->where('id', $request->id)->insert($data);
+              $upt_success = DB::table('password_otp')->insert($up_otp);
+            }
+            else
+            {
+                  $subject="Register Otp";
+                    $message = "Register Otp OTP ". $otp;
+            
+                $update = DB::table('temp_users')->where('id', $request->id)->insert($data);
+                  $up_otp = ['otp'=>$otp,'email'=>$email, 'create_at'=>$date, 'update_at'=>$date];
+                $upt_success = DB::table('password_otp')->insert($up_otp);
+            }
 
-    //             $addUsers =User::create($data);
-    //             $up_otp = ['otp'=>$otp,'email'=>$email, 'create_at'=>$date, 'update_at'=>$date];
-    //             $upt_success = DB::table('password_otp')->insert($up_otp);
-    //             if($addUsers){
-    //                 $this->sendMail($request->email,$subject,$message);
-    //                   $emailExist =DB::table('users')->where('email', $email)->first();
-    //                 $result=array('status'=>true,'message'=> 'User added successfully.','data'=>$emailExist);
-    //             }else{
-    //                $result=array('status'=>false,'message'=> 'Something went wrong. Please try again.');
-    //             }
+
+               
+               // dd($data);
+               
+                // $addUsers =User::create($data);
+              
+                // dd($upt_success);
+                if($update){
+                    $this->sendMail($request->email,$subject,$message);
+                      $emailExist =DB::table('temp_users')->where('email', $email)->first();
+                    $result=array('status'=>true,'message'=> 'OTP sent successfully.','data'=>$emailExist);
+                }else{
+                   $result=array('status'=>false,'message'=> 'Something went wrong. Please try again.');
+                }
+           
                 
-    //     }
- 
-
-        
-    //    echo json_encode($result);
-    // }
+        }
+       echo json_encode($result);
+    }
     public function userRegisterold(Request $request){
-        
+         date_default_timezone_set('Asia/Kolkata');
         $Validation = Validator::make($request->all(),[
             'username' => 'required',
             'password' => 'required',
@@ -157,45 +175,10 @@ class userController extends Controller
         
        echo json_encode($result);
     }
-    public function userRegister(Request $request){
-        $username = $request->username;
-        $email = $request->email;
-     
-
-        $emailExist =DB::table('users')->where('email', $email)->count();
-        $userExist =DB::table('users')->where('username', $username)->count();
-         if($emailExist > 0){
-            $result=array('status'=>true,'message'=> 'Email is already exist.');
-        }else{
-              $username = $request->username;
-            $email = $request->email;
-            $image_url=url('public/images/userimage.png');
-            $password = Hash::make($request->password);
-             $otp =  rand(1000,9999);
-                $date = date("Y-m-d h:i:s", time());
-                $data = ['username'=>$username,'name'=>$username,'image'=>$image_url,'email'=>$email,'password'=>$password,'status'=>1,'role'=>97];
-                 $subject="Register Otp";
-                $message = "Register Otp OTP ". $otp;
-            
-
-                $addUsers =User::create($data);
-                $up_otp = ['otp'=>$otp,'email'=>$email, 'create_at'=>$date, 'update_at'=>$date];
-                $upt_success = DB::table('password_otp')->insert($up_otp);
-                if($addUsers){
-                    $this->sendMail($request->email,$subject,$message);
-                      $emailExist =DB::table('users')->where('email', $email)->first();
-                    $result=array('status'=>true,'message'=> 'User added successfully.','data'=>$emailExist);
-                }else{
-                   $result=array('status'=>false,'message'=> 'Something went wrong. Please try again.');
-                }
-           
-                
-        }
-       echo json_encode($result);
-    }
    public function guestuser(Request $request)
      {
          //dd($request->input());
+         date_default_timezone_set('Asia/Kolkata');
        
             $image_url=url('public/images/userimage.png');
          
@@ -312,6 +295,7 @@ class userController extends Controller
 
 
  public function forgotPassword(Request $request) {
+     date_default_timezone_set('Asia/Kolkata');
         $email = $request->email;
         $otp =  mt_rand(1000,9999);
         $date = date("Y-m-d h:i:s", time());
@@ -321,6 +305,77 @@ class userController extends Controller
    
             $subject="Forgot password";
             $message = "Forgot password OTP ". $otp;
+            if($check_email > 0)
+            {
+        
+                $this->sendMail($request->email,$subject,$message);
+                // if($this->sendMail($email,$subject,$message))
+                // {
+                    $up_otp = ['otp'=>$otp, 'create_at'=>$date, 'update_at'=>$date,'email'=>$email];
+                    $upt_success = DB::table('password_otp')->where('email', $email)->update($up_otp);
+                    if($upt_success)
+                    {
+                        
+                            $result = array('status'=> true, 'message'=>'Otp sent successfully');
+                        
+                    }
+                    else
+                    {
+                         $upt_success2 = DB::table('password_otp')->insert($up_otp);
+                         if($upt_success2)
+                         {
+                           $result = array('status'=> true, 'message'=>'Otp sent successfully'); 
+                         }
+                         else
+                         {
+                            $result = array('status'=> false, 'message'=>'Otp not Send');
+                         }
+                           
+                    }
+        //        }
+               // else
+               // {
+               //          $result = array('status'=> false, 'message'=>'Otp not sent');
+               // }
+            }
+            else
+            {
+                // $subject="Forgot password";
+                // $message = "Forgot password OTP ". $otp;
+                // if($this->sendMail($request->email,$subject,$message))
+                // {
+                //     $gan_otp = ['email'=> $email, 'otp'=>$otp, 'create_at'=>$date, 'update_at'=>$date];
+                //     $otp_success = DB::table('password_otp')->insert($gan_otp);
+                //     if($otp_success){
+                //             $result = array('status'=> true, 'message'=>'Otp sent successfully');
+                //     }else{
+                //             $result = array('status'=> false, 'message'=>'Otp not sent');
+                //         }
+                // }
+                // else
+                // {
+                //     $result = array('status'=> false, 'message'=>'Otp not sent');
+                // }
+                 $result = array('status'=> false, 'message'=>'Invalid Email Address');
+            }
+        }
+        else
+        {
+            $result = array('status'=> false, 'message'=>'Email is required');
+        }
+        echo json_encode($result);
+    }
+    public function resendotp(Request $request) {
+         date_default_timezone_set('Asia/Kolkata');
+        $email = $request->email;
+        $otp =  mt_rand(1000,9999);
+        $date = date("Y-m-d h:i:s", time());
+        if(!empty($email))
+        {
+                $check_email =DB::table('temp_users')->where('email', $email)->count();
+   
+            $subject="Resend Otp";
+            $message = "Resend OTP ". $otp;
             if($check_email > 0)
             {
         
@@ -395,6 +450,64 @@ class userController extends Controller
     }
         
     public function passwordVerification(Request $request){
+         date_default_timezone_set('Asia/Kolkata');
+        $email = $request->email;
+        $otp = $request->otp;
+        $method = $request->method;
+
+        $verify_otp = DB::table('password_otp')->where('email', $email)->where('otp', $otp)->first();
+        // echo "<pre>";
+        // // print_r($verify_otp);
+        // // exit;
+        if(!empty($verify_otp))
+        {
+           //    $otp_expires_time = Carbon::now()->subMinutes(5);
+          $otp_expires_time=  date('m/d/Y h:i:s', time());
+                if($verify_otp->create_at < $otp_expires_time){
+                    $result = array('status'=> false, 'message'=>'OTP Expired.');
+                }
+                else{
+                    DB::table('password_otp')->where('email',$email)->delete();
+                      $user_data = DB::table('temp_users')->where('email', $email)->first();
+                    //  dd($user_data);
+
+                        $image_url=url('public/images/userimage.png');
+                       $date = date("Y-m-d h:i:s", time());
+                        if($method==1)
+                        {
+                            $updateData['email'] = $user_data->email;
+                            $updateData['name'] = $user_data->name;
+                            $updateData['username']=$user_data->username;
+                            $updateData['country_code']=$user_data->country_code;
+                            $updateData['password']=$user_data->password;
+                            $updateData['role']=$user_data->role;
+                            $updateData['image'] =  isset($user_data->image)? $user_data->image : $image_url ;
+                             $updateData['created_at'] =   $date ;
+                            $updateData['updated_at'] =   $date ;
+                          //  dd($updateData);
+
+                            DB::table('users')->insert($updateData);
+                             DB::table('temp_users')->where('email',$email)->delete();
+                           $insertedData =  DB::table('users')->where('email', $email)->first();
+                            $result = array('status'=> true, 'message'=>'Signup  Successful.','data'=>$insertedData);
+                        }
+                        else
+                        {
+                              $insertedData =  DB::table('users')->where('email', $email)->first();
+                                $result = array('status'=> true, 'message'=>'Password OTP verified.','data'=>$insertedData);        
+                        }
+                    
+                }          
+        }
+        else
+        {
+            $result = array('status'=> false, 'message'=>'invalid Otp');
+        }
+     
+        echo json_encode($result);
+    }
+    public function forgetpasswordVerification(Request $request){
+         date_default_timezone_set('Asia/Kolkata');
         $email = $request->email;
         $otp = $request->otp;
         
@@ -404,9 +517,8 @@ class userController extends Controller
         // // exit;
         if(!empty($verify_otp))
         {
-     //          $otp_expires_time = Carbon::now()->subMinutes(5);
-         $otp_expires_time=  date('m/d/Y h:i:s', time());
-      //exit;
+           //    $otp_expires_time = Carbon::now()->subMinutes(5);
+          $otp_expires_time=  date('m/d/Y h:i:s', time());
                 if($verify_otp->create_at < $otp_expires_time){
                     $result = array('status'=> false, 'message'=>'OTP Expired.');
                 }
@@ -415,7 +527,7 @@ class userController extends Controller
                       $user_data = DB::table('users')->where('email', $email)->first();
                         $image_url=url('public/images/userimage.png');
                         $user_data->image =  isset($user_data->image)? $user_data->image : $image_url ;
-                    $result = array('status'=> true, 'message'=>'otp valid successfully.','data'=>$user_data);
+                    $result = array('status'=> true, 'message'=>'Otp Valid Successfull.','data'=>$user_data);
                 }          
         }
         else
@@ -427,6 +539,7 @@ class userController extends Controller
     }
 
     public function passwordUpdate(Request $request){
+         date_default_timezone_set('Asia/Kolkata');
         $email = $request->email;
         
         $newPassword = Hash::make($request->newPassword);
@@ -450,7 +563,7 @@ class userController extends Controller
            $data =['password'=>$newPassword,'updated_at'=>$date]; 
            $pass_upde = DB::table('users')->where('email',$email)->update($data);
            if($pass_upde){
-            $result = array('status'=> true, 'message'=>'password changed successfully.');
+            $result = array('status'=> true, 'message'=>'Password reset successful.');
            }
            else{
             $result = array('status'=> false, 'message'=>'password not changed.');
@@ -462,6 +575,7 @@ class userController extends Controller
     
 
     public function signUp(Request $request){
+         date_default_timezone_set('Asia/Kolkata');
         $validate= Validator::make($request->all(),[
             'name'=>'required',
             'email'=>'required',
@@ -530,6 +644,7 @@ class userController extends Controller
 
        public function profile_update(Request $request)
     {
+         date_default_timezone_set('Asia/Kolkata');
         if(!empty($request->id))
         {
                $usreData = DB::table('users')->where('id', $request->id)->first();
@@ -628,7 +743,7 @@ class userController extends Controller
     }
 
     public function verifyOtp(Request $request){
-        
+         date_default_timezone_set('Asia/Kolkata');
         $email =  session("email");
         $otp=$request->digit1.$request->digit2.$request->digit3.$request->digit4.$request->digit5.$request->digit6;
         $otp = (int)$otp; 

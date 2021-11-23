@@ -25,6 +25,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/user_register', 'App\Http\Controllers\Api\userController@userRegister');
 Route::post('/login', 'App\Http\Controllers\Api\userController@logincheck');
 Route::post('/forgot_password', 'App\Http\Controllers\Api\userController@forgotPassword');
+Route::post('/resendotp', 'App\Http\Controllers\Api\userController@resendotp');
+
 Route::post('/password_verification', 'App\Http\Controllers\Api\userController@passwordVerification');
 Route::post('/password_update', 'App\Http\Controllers\Api\userController@passwordUpdate'); 
 Route::post('/edit', 'App\Http\Controllers\Api\userController@edit'); 
@@ -39,3 +41,5 @@ Route::post('/forgot_password_verify', 'App\Http\Controllers\Api\userController@
 
 Route::post('/email_verification', 'App\Http\Controllers\Api\userController@emailVerification');
 Route::post('/email_sent_otp', 'App\Http\Controllers\Api\userController@emailSentOtp');
+// Route::post('/verify_otp','App\Http\Controllers\LoginController@verifyOtp')->name('verify_otp');
+
