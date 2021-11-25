@@ -71,6 +71,18 @@
          </div>
       </section>
    </main>
+     <!-- Modal -->
+      <div class="modal fade modelStyle show" id="staticBackdrop">
+         <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+               <div class="modal-body text-center">
+                  <p id="msg">
+                  </p>
+                  <button type="button" class="btn btn-primary mt-4" data-bs-dismiss="modal" aria-label="Close">Ok</button>
+               </div>
+            </div>
+         </div>
+      </div>
       <!-- Scripts -->
       <script src="{{asset('assets/js/jquery.min.js')}} "></script>
       <script src="{{asset('assets/js/popper.min.js')}} "></script>
@@ -106,6 +118,9 @@ messages: {
          success:function(data) { 
          var obj = JSON.parse(data);
          if(obj.status==true){
+              $('#staticBackdrop').modal('show');
+
+                $("#msg").text(obj.message);
             window.location.href= "{{route('my_account')}}";
 
          }
@@ -115,8 +130,11 @@ messages: {
                if(obj.status==false)
                {
                //   alert(obj.message);
+                $('#staticBackdrop').modal('show');
+
+                $("#msg").text(obj.message);
                   jQuery('#msg_error').html('');
-                  jQuery('#msg_error').html(obj.message);
+                  //jQuery('#msg_error').html(obj.message);
             //jQuery('#msg_error').css("display", "block");
             //    jQuery('#msg_error').css({'display','block','color':'red'});
               $("#msg_error").css({"display": "block", "color": "red"}); 

@@ -99,8 +99,9 @@
                            <span id="error_name"></span>
                            <div class="mb-3">
                               <label for="email" class="form-label">Email</label>
-                              <input type="email" class="form-control"  name="email1" email="email" placeholder="Enter Email">
+                              <input type="email" class="form-control"  name="email1" email="email" autocomplete="off"  id="email" placeholder="Enter Email">
                            </div>
+                           <span id="email_er"></span>
                            <div class="mb-3">
                               <label for="phone-number" class="form-label">Phone Number <span>(Optional)</span></label>
                              
@@ -175,8 +176,24 @@
 </body>
 
 <script type="text/javascript">
+   // function emailvalidation(email)
+   // {
+   //    alert(email);
+   // }
     $(function(){
 
+    //  $("#email").on("keyup",function(){
+      //   alert("s");
+      //});
+// $('#email').on('keypress', function() {
+//    alert(this.value);
+//     var re = /([A-Z0-9a-z_-][^@])+?@[^$#<>?]+?\.[\w]{2,4}/.test(this.value);
+//     if(!re) {
+//         $('#email_er').show();
+//     } else {
+//         $('#email_er').hide();
+//     }
+// })
 
         country_code =$(".iti__selected-flag").attr("title");
          const myArr = country_code.split(": ");
@@ -205,11 +222,15 @@
 }
 </style>
 <script>
+   jQuery.validator.addMethod("emailExt", function(value, element, param) {
+    return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+},'Your E-mail is wrong');
+
 	$("#user_signup").validate({
 		
 	rules: {
 		name: {required: true,},
-		email: {required: true,email: true,},  
+		email: {required: true,email: true, emailExt: true},  
 	
 		password:{required:true},
 		// specialization:{required:true},

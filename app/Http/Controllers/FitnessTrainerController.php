@@ -286,7 +286,7 @@ public function fitness_trainer_data(Request $request)
                     if($request->status==3)
                     {
                         $subject="Your Request";
-                         $message="Your registration on We Mark the Spot platform has been rejected  "."Reason:".$request->reason;
+                         $message="Your registration on We Mark the Spot platform has been rejected.<br>"."Reason:".$request->reason;
                         $this->sendMail($userdata->email,$subject,$message);
                     }
                     $data['reason'] =$request->reason;
@@ -440,10 +440,18 @@ public function fitness_trainer_data(Request $request)
 
     public function fitness_trainer_filter(Request $request)
     {
-       // dd($request->status);
-    
-         $fitnesstrainer  =  User::where(['status'=>$request->status,'role'=>"97"])->get();
-       // dd(count($fitnesstrainer));
+     //   dd($request->status);
+        if($request->status==1)
+        {
+            $status =0;
+        }
+        else
+        {
+            $status=$request->status;
+        }
+        $fitnesstrainer  =  User::where(['status'=>$status,'role'=>"99"])->orderBy('id', 'DESC')->get();
+        // $fitnesstrainer  =  User::where(['status'=>$request->status,'role'=>"99"])->get();
+      //  dd(count($fitnesstrainer));
         if(!is_null($fitnesstrainer))
         {
             $result=array('status'=>true,'data'=> $fitnesstrainer);

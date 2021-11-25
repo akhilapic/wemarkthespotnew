@@ -84,9 +84,9 @@
 							</div>
 							<div class="mb-3 col-md-6">
 								<label for="username" class="control-label">Upload Document:</label>
-								<!-- <img src="{{($fitnesstrainer->upload_doc)}}" height="150" width="100" class="form-control" />
-								<br> -->
-									<label class="control-label">{{$fitnesstrainer->upload_doc}}</label>
+								<img src="{{($fitnesstrainer->upload_doc)}}" height="150" width="100" class="form-control" />
+								<br>
+								<!-- 	<label class="control-label">{{$fitnesstrainer->upload_doc}}</label> -->
 							</div>
 						</div>
 						<a type="button" href="{{ url('manager_business') }}" class="btn btn-dark fa-pull-left mt-3">Back</a>

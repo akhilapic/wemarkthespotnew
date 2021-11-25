@@ -82,7 +82,7 @@
 							</div>
 						</div>
 						<a type="button" href="{{ url('/manager_category') }}"class="btn btn-dark fa-pull-left mt-3">Back</a>
-						<input type="submit" id="submit" value="Add" class="btn btn-success btn_submit fa-pull-right mt-3">
+						<input type="submit" id="submit" value="Save" class="btn btn-success btn_submit fa-pull-right mt-3">
 					</form>
 				</div>
 			</div>

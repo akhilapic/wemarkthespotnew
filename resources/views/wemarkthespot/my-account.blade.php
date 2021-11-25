@@ -68,16 +68,16 @@
                         </div>
                         <div class="col-md-6">
                            <label class="form-label">Business Name</label>
-                           <input type="text" class="form-control" name="business_name"  value="{{$account->business_name}}" placeholder="Enter Business Name">
+                           <input type="text" class="form-control" onkeypress="return /^[a-zA-Z \s]+$/i.test(event.key)" name="business_name"  value="{{$account->business_name}}" placeholder="Enter Business Name">
                         </div>
                         <div class="col-md-6">
                            <label class="form-label">Email</label>
-                           <input type="text" class="form-control" name="email" value="{{$account->email}}" placeholder="Enter Email">
+                           <input type="text" readonly class="form-control" name="email" value="{{$account->email}}" placeholder="Enter Email">
                         </div>
                         <div class="col-md-6">
                         <label class="form-label">Mobile Number</label><br/>
                         <input type="hidden" id="country_code"  name="country_code" value="{{$account->country_code}}"/>
-                           <input type="text" class="form-control" name="phone" id="phone" value="{{$account->phone}}" placeholder="Enter Phone Number">
+                           <input type="text" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="phone" id="phone" value="{{$account->phone}}" maxlength="10" placeholder="Enter Phone Number">
                         </div>
                         <div class="col-md-6">
                            <label class="form-label">Opening Hours</label>
@@ -297,12 +297,15 @@
 
    
    });
+     jQuery.validator.addMethod("emailExt", function(value, element, param) {
+    return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+},'Please enter valid email');
 
    $("#my_profile_edit").validate({
       
    rules: {
       name: {required: true,},
-      email: {required: true,email: true,},  
+     email: {required: true,email: true,maxlength:50,emailExt: true,},  
    
     
       business_category:{required:true},

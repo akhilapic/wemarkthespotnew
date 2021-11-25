@@ -38,7 +38,7 @@
 
                             <button  style="margin-bottom: 10px" class="btn btn-danger filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='1'>Pending</button>
                             <button  style="margin-bottom: 10px" class="btn btn-primary filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='2'>Approved</button>						
-                            <button  style="margin-bottom: 10px" class="btn btn-warning filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='3'>Reject</button>
+                            <button  style="margin-bottom: 10px" class="btn btn-warning filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='3'>Rejected</button>
                             <div class="col-md-12">
                                 <!-- <a href="{{url('add_workout_plan')}}" class="btn btn-success fa-pull-right btn-sm table_add_btn mx-2" data-bs-toggle="modal" data-bs-target="#add_workout_plan_modal" data-bs-whatever="@mdo">Add New Workout Plan</a> -->
                                 <a style="display:none;" href="{{url('add_workout_plan')}}" class="btn btn-success fa-pull-right btn-sm table_add_btn mx-2"  data-bs-whatever="@mdo">Add New Workout Plan</a>
@@ -67,23 +67,30 @@
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->email}}</td>
                                     <!--     <td>{{ $item->country_code}} {{ $item->phone}}</td> -->
-
-                                        <td>{{ $item->business_type }}</td>
+                                        @if($item->business_type==1)
+                                         <td>Online Only</td>
+                                        @else
+                                         <td>Physical Location</td>
+                                        @endif
+                                       
                                        <!--  <td>{{ $item->specialization }}</td>
                                         <Td>{{$item->address}} </Td> -->
-                                        @if($item->status=='1')
+                                        @if($item->status=='0')
+                                        <td style="color:Red">Pending</td>
+                                        
+                                        @elseif($item->status=='1')
                                         <td style="color:Red">Pending</td>
                                         @elseif($item->status=='2')
                                         <td style="color:green;">Approved</td>
-                                        @else
-                                        <td style="color:orange;">Reject</td>
+                                        @elseif($item->status=='3')
+                                        <td style="color:orange;">Rejected</td>
                                         @endif
                                         <td>
 
                                             <select  class="status_change" class="form-select" data-id="{{$item->id}}" >
                                                 <option value="1" @if($item->status == "1") selected  @endif>Pending</option>
                                                 <option value="2" @if($item->status == "2") selected  @endif>Approved</option>
-                                                <option value="3" @if($item->status == "3") selected  @endif>Reject</option>
+                                                <option value="3" @if($item->status == "3") selected  @endif>Rejected</option>
                                             </select>
                                         </td>
                                         <td>
@@ -141,7 +148,7 @@
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light-danger text-danger font-weight-medium" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit"  id="submit"  class="btn btn-success btn_submit">Approved</button>
+                                    <button type="submit"  id="submit"  class="btn btn-success btn_submit">Approve</button>
                                 </div>
                         </form>
                     </div>
@@ -267,11 +274,17 @@
                                 tr += '<td>' + result[index].id + '</td>';
                                 tr += '<td>' + result[index].name + '</td>';
                                 tr += '<td>' + result[index].email + '</td>';
-                                tr += '<td>' + result[index].country_code + ' ' + result[index].phone + '</td>';
-                                tr += '<td>' + result[index].gender + '</td>';
-                                tr += '<td>' + result[index].specialization + '</td>';
-                                tr += '<td>' + result[index].address + '</td>';
-                                if (result[index].status == '1')
+                                if(result[index].business_type==1)
+                                {
+                                 tr += '<td>Online Only</td>';     
+                                }
+                                else
+                                {
+                                     tr += '<td>Physical Location</td>';   
+                                }
+                               
+                            
+                                if (result[index].status == '1' || result[index].status == '0')
                                 {
                                     tr += '<td style="color:Red">Pending</td>';
                                 }
@@ -281,11 +294,11 @@
                                 }
                                 else
                                 {
-                                    tr += '<td style="color:orange;">Reject</td>';
+                                    tr += '<td style="color:orange;">Rejected</td>';
                                 }
                                 tr += '<td>';
                                 tr += '<select    class="form-select status_change" onchange="statuschange(this.value, ' + result[index].id + ')" data-id="' + result[index].id + '" >';
-                                if (result[index].status == '1')
+                                if (result[index].status == '1' || result[index].status == '0')
                                 {
                                     tr += '<option value="1" selected >Pending</option>';
                                     tr += '<option value="2"  >Approved</option>';

@@ -63,7 +63,7 @@
                            </div>
                            <div class="mb-3">
                               <label for="name" class="form-label">Business Owner Name</label>
-                              <input type="text" class="form-control" id="name1" name="name"  value="{{old('name')}}" placeholder="Enter Business Owner Name">
+                              <input type="text" class="form-control" id="name1" onkeypress="return /^[a-zA-Z \s]+$/i.test(event.key)" name="name"  value="{{old('name')}}" placeholder="Enter Business Owner Name">
                            </div>
                            @if($errors->has('name'))
                               <span class="error alert alert-dange">{{ $errors->first('name') }}</span>
@@ -71,15 +71,16 @@
                            <span id="error_name"></span>
                            <div class="mb-3">
                               <label for="email" class="form-label">Email</label>
-                              <input type="email" class="form-control"  name="email" email="email" id="email" value="{{old('email')}}" placeholder="Enter Email">
+                              <input type="email" class="form-control" autocomplete="off" maxlength="50" name="email" email="email" id="email" value="{{old('email')}}" placeholder="Enter Email">
                            </div>
+                            <span class="alert alert-dange" id="email_er"></span>
                             @if($errors->has('email'))
                               <span class="error alert alert-dange">{{ $errors->first('email') }}</span>
                            @endif
                            <div class="mb-3">
                               <label for="phone-number" class="form-label">Phone Number <span>(Optional)</span></label>
                               <input type="hidden" name="country_code" id="country_code">
-                              <input type="number" class="form-control" name="phone" id="phone"  value="{{old('phone')}}" placeholder="Enter Phone Number"/>
+                              <input type="text" class="form-control" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'');"  name="phone" id="phone"  value="{{old('phone')}}" placeholder="Enter Phone Number"/>
                            </div>
                              @if($errors->has('phone'))
                               <span class="error alert alert-dange">{{ $errors->first('phone') }}</span>
@@ -209,6 +210,25 @@
 </body>
 
 <script type="text/javascript">
+//    function ValidateEmail(inputText)
+// {
+//       var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+//    // var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+//    if(inputText.value.match(emailPattern))
+//    {
+//    //alert("Valid email address!");
+//       $("#email_er").text("Valid email address!");
+//    return true;
+//    }
+//    else
+//    {
+//        $("#email_er").text("You have entered an invalid email address!");
+//        $("#email").focus();
+//    //document.form1.text1.focus();
+//    return false;
+//    }
+// }
 
 $(document).ready(function() {
 
@@ -287,11 +307,15 @@ $(document).ready(function() {
 }
 </style>
 <script>
+   jQuery.validator.addMethod("emailExt", function(value, element, param) {
+    return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+},'Please enter valid email');
+
 	$("#user_signup").validate({
 		
 	rules: {
 		name: {required: true,},
-		email: {required: true,email: true,},  
+		email: {required: true,email: true,maxlength:50,emailExt: true,},  
 	
 		password:{required:true,
          minlength:5,

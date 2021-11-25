@@ -168,8 +168,8 @@ class LoginController extends Controller
             $mail->Port=587;
             $mail->SMTPSecure="tls";
             $mail->SMTPAuth=true;
-            $mail->Username="raviappic@gmail.com";
-            $mail->Password="audnjvohywazsdqo";
+            $mail->Username= "wemarkspot@gmail.com"; //"raviappic@gmail.com";
+            $mail->Password="dwspcijqkcgagrzl";//"audnjvohywazsdqo";
             $mail->addAddress($email,"User Name");
             $mail->Subject=$stubject;
             $mail->isHTML();
@@ -249,7 +249,7 @@ class LoginController extends Controller
                 }
                 else
                 {
-                    $result=array('status'=>false,'message'=>'Your Request Not Approved By Admin');  
+                    $result=array('status'=>false,'message'=>'Your request is yet to be approved by Admin. You will receive a confirmation mail over registered mail id, once admin responds over your application.');  
                 }
                  
             }
