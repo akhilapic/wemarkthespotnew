@@ -20,12 +20,12 @@
                         @csrf
                      <input type="hidden" name="email" value="{{$user_data->email}}">
                         <div class="my-5 d-flex justify-content-center">
-                           <input type="number" name="digit1" maxlength="1" class="form-control" required>
-                           <input type="number" name="digit2" maxlength="1" class="form-control" required>
-                           <input type="number" name="digit3" maxlength="1" class="form-control" required>
-                           <input type="number" name="digit4" maxlength="1" class="form-control" required>
-                           <input type="number" name="digit5" maxlength="1" class="form-control" required>
-                           <input type="number" name="digit6" maxlength="1" class="form-control" required>
+                           <input type="text" name="digit1" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" required>
+                           <input type="text" name="digit2" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"  class="form-control" required>
+                           <input type="text" name="digit3" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" required>
+                           <input type="text" name="digit4" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" required>
+                           <input type="text" name="digit5" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" required>
+                           <input type="text" name="digit6" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" required>
                         </div>
 
                         <div class="w-50 mx-auto my-5">

@@ -7,7 +7,7 @@ use Validator;
 use App\Models\Verification;
 use PHPMailer\PHPMailer\PHPMailer; 
 use PHPMailer\PHPMailer\SMTP; 
-
+use App\Models\SubCategorys;
 use App\Models\Categorys;
 use App\Models\Users;
 use URL;
@@ -267,12 +267,15 @@ class LoginController extends Controller
     public function myaccount(Request $request){
         $user_id = session()->get('id');
             $account = Users::where('id', $user_id)->first();
-           // dd($account);
+          // dd($account);
            $categorylist =  Categorys::where('status',0)->get();
-        return view('wemarkthespot.my-account',compact('account','categorylist'));
+           $subcategorylist =  SubCategorys::where('status',0)->get();
+           
+        return view('wemarkthespot.my-account',compact('account','categorylist','subcategorylist'));
     }
 
     public function my_profile_edit(Request $request){
+    //    dd($request->input());
         $validate = Validator::make($request->all(),[
                 'name' => 'required',
                 'email' => 'required',
@@ -284,6 +287,11 @@ class LoginController extends Controller
            $result = array('status'=>false, 'message'=>'Validation failed', 'error'=>$validate->errors());
         }
         else{
+            $data = array();
+            $user_id = session()->get('id');
+          //  $user = new Users();
+            $user = Users::where('id', $user_id)->first();
+            
             $fileimage="";
                $image_url='';
                if($request->hasfile('image'))
@@ -293,28 +301,43 @@ class LoginController extends Controller
                 $destination=public_path("images");
                 $file_image->move($destination,$fileimage);
                 $image_url=url('public/images').'/'.$fileimage;
-             
               }
+              else{
+                  $image_url = $user->image;
+              }
+              $fileimage2="";
+              $business_image_url='';
+              if($request->hasfile('business_images'))
+             {
+               $file_image=$request->file('business_images');
+               $fileimage2=md5(date("Y-m-d h:i:s", time())).".".$file_image->getClientOriginalExtension();
+               $destination=public_path("images");
+               $file_image->move($destination,$fileimage2);
+               $business_image_url=url('public/images').'/'.$fileimage2;
+             }
+             else{
+                 $business_image_url = isset($request->old_business_images) ? $request->old_business_images : $user->business->business_images;
+             }
               
-              $data = array();
-              $user_id = session()->get('id');
-              $user = new Users();
-              $user = Users::where('id', $user_id)->first();
-             $data['name']=($request->name)? $request->name:$user->name;
-             $data['email']=($request->email)? $request->email:$user->email;
-             $data['phone']=($request->phone)? $request->phone:$user->phone;
-             $data['location']=($request->location)? $request->location:$user->location;
-             $data['business_name']=($request->business_name)? $request->business_name:$user->business_name;
-             $data['opeing_hour']=($request->opeing_hour)? $request->opeing_hour:$user->opeing_hour;
-             $data['closing_hour']=($request->closing_hour)? $request->closing_hour:$user->closing_hour;
-             $data['business_type']=($request->business_type)? $request->business_type:$user->business_type;
-             $data['image']=$user->image_url;
-             $data['business_category']=($request->business_category)? $request->business_category:$user->business_category;
-             $data['description']=($request->description)? $request->description:$user->description;
+             
+             $data['name']=isset($request->name)? $request->name:$user->name;
+             $data['business_name']=isset($request->business_name) ? $request->business_name : $user->business_name;
+             $data['email']=isset($request->email)? $request->email:$user->email;
+             $data['country_code']=isset($request->country_code)? $request->country_code:$user->country_code;
+             $data['phone']=isset($request->phone)? $request->phone:$user->phone;
+             $data['location']=isset($request->location)? $request->location:$user->location;
 
+             $data['opeing_hour']=isset($request->opeing_hour)? $request->opeing_hour:$user->opeing_hour;
+             $data['closing_hour']=isset($request->closing_hour)? $request->closing_hour:$user->closing_hour;
+             $data['business_type']=isset($request->business_type)? $request->business_type:$user->business_type;
+             $data['image']=$image_url;
+             $data['business_category']=isset($request->business_category)? $request->business_category:$user->business_category;
+             $data['business_sub_category']=isset($request->business_sub_category)? $request->business_sub_category:$user->business_sub_category;
+             $data['description']=isset($request->description)? $request->description:$user->description;
+             $data['business_images']=$business_image_url;
                   $update = $user->where('id',$user_id) ->update($data);
                   if($update){
-                          $result = array('status'=>true, 'message'=>'edit succesfully');
+                          $result = array('status'=>true, 'message'=>'Profile update succesfully');
                         }else{
                                $result = array('status'=>false, 'message'=>'Something Went Wrong ');
                         }

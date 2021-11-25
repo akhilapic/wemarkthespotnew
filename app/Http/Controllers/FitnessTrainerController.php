@@ -954,7 +954,7 @@ public function fitness_trainer_data(Request $request)
             
             if(!empty($res))
             {
-                  $result=array('status'=>false,'message'=> 'sub categorys name Already exists.' ,'error'=>$Validation->errors());
+                  $result=array('status'=>false,'message'=> 'sub categorys name Already exists.' );
             }
             else
             {
@@ -1086,6 +1086,20 @@ public function fitness_trainer_data(Request $request)
         $update =  SubCategorys::where('id',$id)->update($data);
         if($update){
             $result = array("status"=> true, "message"=>"update status");
+        }
+        else{
+            $result = array("status"=> false, "message"=>"not update status");
+        }
+        echo json_encode($result);
+    }
+    
+    public function sub_category_by_category_id(Request $request)
+    {
+
+        $category =  SubCategorys::where('category_id',$request->category_id)->get();
+    //    dd($category);
+        if($category){
+            $result = array("status"=> true, "message"=>"update status",'data'=>$category);
         }
         else{
             $result = array("status"=> false, "message"=>"not update status");

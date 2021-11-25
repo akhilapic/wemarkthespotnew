@@ -3,8 +3,7 @@
     <!-- footer -->
     <!-- ============================================================== -->
     <footer class="footer text-center">
-        All Rights Reserved. W3ondemand
-	</footer>
+ All Rights Reserved. We Mark The Spot	</footer>
     <!-- ============================================================== -->
     <!-- End footer -->
     <!-- ============================================================== -->

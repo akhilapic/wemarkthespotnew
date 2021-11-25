@@ -25,7 +25,7 @@ class userController extends Controller
 
     public function logincheck(Request $request)
     {
- date_default_timezone_set('Asia/Kolkata');
+        date_default_timezone_set('Asia/Kolkata');
         $email = $request->email;
         
         if(!isset($email))
@@ -43,18 +43,26 @@ class userController extends Controller
             {
                 if($emailExist->email=$email)
                 {
-                     if(Hash::check($request->password, $emailExist->password))
+                    if($emailExist->status==0)
                     {
-                        $data['login_check']=1;
-                        DB::table('users')->where('email', $email)->update($data);
-                         $image_url=url('public/images/userimage.png');
-                        $emailExist->image =  isset($emailExist->image)? $emailExist->image : $image_url ;
-                        $result=array('status'=>true,'message'=> 'Login Successful.','data'=>$emailExist);     
+                        if(Hash::check($request->password, $emailExist->password))
+                        {
+                            $data['login_check']=1;
+                            DB::table('users')->where('email', $email)->update($data);
+                             $image_url=url('public/images/userimage.png');
+                            $emailExist->image =  isset($emailExist->image)? $emailExist->image : $image_url ;
+                            $result=array('status'=>true,'message'=> 'Logged in Successfully.','data'=>$emailExist);     
+                        }
+                        else
+                        {
+                             $result=array('status'=>false,'message'=> 'Invalid Password');   
+                        }
                     }
                     else
                     {
-                         $result=array('status'=>false,'message'=> 'Invalid Password');   
+                        $result=array('status'=>false,'message'=> 'Your account has been deactivated by admin');   
                     }
+                    
                 }
                 else
                 {
@@ -489,7 +497,7 @@ class userController extends Controller
                             DB::table('users')->insert($updateData);
                              DB::table('temp_users')->where('email',$email)->delete();
                            $insertedData =  DB::table('users')->where('email', $email)->first();
-                            $result = array('status'=> true, 'message'=>'Signup  Successful.','data'=>$insertedData);
+                            $result = array('status'=> true, 'message'=>'Signed up successfully.','data'=>$insertedData);
                         }
                         else
                         {

@@ -322,4 +322,6 @@ Route::get('/my_account','App\Http\Controllers\LoginController@myaccount')->name
  
  Route::post('/subcategory_status/{id}', [App\Http\Controllers\FitnessTrainerController::class, 'subcategory_status'])->name('subcategory_status')->middleware('auth');
  
+ Route::post('/sub_category_by_category_id', [App\Http\Controllers\FitnessTrainerController::class, 'sub_category_by_category_id'])->name('sub_category_by_category_id');
+ 
   //=======================================wemarkthespot AND===============================================================================

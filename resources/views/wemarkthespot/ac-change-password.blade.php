@@ -17,7 +17,7 @@
                      </div>
                      <div class="BoxShade">
                         <ul>
-                           <li><a href="{{url('my-account')}}">My Profile</a></li>
+                           <li><a href="{{url('my_account')}}">My Profile</a></li>
                            <li><a href="{{url('my-subscription')}}">My Subscription</a></li>
                            <li><a href="{{url('notifications')}}">Notifications</a></li>
                            <li class="active"><a href="{{url('ac-change-password')}}">Change Password</a></li>
