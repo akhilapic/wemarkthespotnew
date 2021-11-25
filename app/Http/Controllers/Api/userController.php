@@ -23,7 +23,7 @@ use Session;
 class userController extends Controller
 {
 
-    public function logincheck(Request $request)
+        public function logincheck(Request $request)
     {
         date_default_timezone_set('Asia/Kolkata');
         $email = $request->email;
@@ -128,8 +128,8 @@ class userController extends Controller
                 // $addUsers =User::create($data);
               
                 // dd($upt_success);
-                if($update){
-                    $this->sendMail($request->email,$subject,$message);
+                if($this->sendMail($request->email,$subject,$message)){
+                  //  $this->sendMail($request->email,$subject,$message);
                       $emailExist =DB::table('temp_users')->where('email', $email)->first();
                     $result=array('status'=>true,'message'=> 'OTP sent successfully.','data'=>$emailExist);
                 }else{
@@ -140,6 +140,7 @@ class userController extends Controller
         }
        echo json_encode($result);
     }
+    
     public function userRegisterold(Request $request){
          date_default_timezone_set('Asia/Kolkata');
         $Validation = Validator::make($request->all(),[
@@ -492,6 +493,7 @@ class userController extends Controller
                             $updateData['image'] =  isset($user_data->image)? $user_data->image : $image_url ;
                              $updateData['created_at'] =   $date ;
                             $updateData['updated_at'] =   $date ;
+                          //  $updateData['status'] =   0 ;
                           //  dd($updateData);
 
                             DB::table('users')->insert($updateData);
@@ -727,8 +729,8 @@ class userController extends Controller
             $mail->Port=587;
             $mail->SMTPSecure="tls";
             $mail->SMTPAuth=true;
-            $mail->Username="raviappic@gmail.com";
-            $mail->Password="audnjvohywazsdqo";
+            $mail->Username= "wemarkspot@gmail.com"; //"raviappic@gmail.com";
+            $mail->Password="dwspcijqkcgagrzl";//"audnjvohywazsdqo";
             $mail->addAddress($email,"User Name");
             $mail->Subject=$stubject;
             $mail->isHTML();
