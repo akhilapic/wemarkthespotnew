@@ -229,7 +229,7 @@ class LoginController extends Controller
         {
             if(!Hash::check($request->password, $business->password))
             {
-                $result=array('status'=>false,'statuspsd'=> 'Invalid Password','check'=>"password");
+                $result=array('status'=>false,'message'=> 'Invalid Password','check'=>"password");
             }
             else
             {
@@ -352,4 +352,130 @@ class LoginController extends Controller
         Session::flush();
         return Redirect('signin');
     }
+    public function forgetpsd()
+    {
+        return view('wemarkthespot.forgetpsd');
+    }
+    public function forgotPassword(Request $request) {
+        date_default_timezone_set('Asia/Kolkata');
+           $email = $request->email;
+         //  $emailcheck=Users::where(['email'=>$email,'status'=>99])->first();
+
+         $otp =  mt_rand(100000,999999);
+        $date = date("Y-m-d h:i:s", time());
+        if(!empty($email))
+        {
+                 $check_email=Users::where(['email'=>$email,'role'=>99])->first();
+                 $redriecturl = "otp-verifictionforget/".$check_email->id;
+            
+               $subject="Forgot password";
+               $message = "Forgot password OTP ". $otp;
+               if(!empty($check_email))
+               {
+                    
+                    $up_otp = ['otp'=>$otp, 'create_at'=>$date, 'update_at'=>$date,'email'=>$email];
+                    if($this->sendMail($request->email,$subject,$message))
+                    {
+                        $check_email2=DB::table('password_otp')->where('email', $email)->first();
+                            if(!empty($check_email2))
+                            {
+                                $upt_success = DB::table('password_otp')->where('email', $email)->update($up_otp);
+                            }
+                            else
+                            {
+                                $upt_success = DB::table('password_otp')->insert($up_otp);
+                            }
+                            if($upt_success)
+                            {
+                            
+                                $result = array('status'=> true, 'message'=>'OTP sent successfully',"url"=>$redriecturl); 
+                            }
+                            else
+                            {
+                                $result = array('status'=> false, 'message'=>'OTP not Send');
+                            }
+                    }
+                    else
+                    {
+                        $result = array('status'=> false, 'message'=>'OTP not Send');
+                    }
+          
+               }
+               else
+               {
+                    $result = array('status'=> false, 'message'=>'Invalid Email Address');
+               }
+           }
+           else
+           {
+               $result = array('status'=> false, 'message'=>'Email is required');
+           }
+           echo json_encode($result);
+       }
+
+       public function otp_verifictionforget($id)
+       {
+        $user_data=Users::where('id',$id)->first();
+        //   dd($user_data);
+           return view('wemarkthespot.otp-verifictionforget',compact('user_data'));
+       }
+
+       public function verify_otpforget(Request $request)
+       {
+        date_default_timezone_set('Asia/Kolkata');
+    //    dd($request->input());
+        $email = $request->email;
+        $otp = $request->digit1.$request->digit2.$request->digit3.$request->digit4.$request->digit5.$request->digit6;
+        $verify_otp = DB::table('password_otp')->where('email', $email)->where('otp', $otp)->first();
+    
+        if(!empty($verify_otp))
+        {
+           //    $otp_expires_time = Carbon::now()->subMinutes(5);
+          $otp_expires_time=  date('m/d/Y h:i:s', time());
+                if($verify_otp->create_at < $otp_expires_time){
+                    $result = array('status'=> false, 'message'=>'OTP Expired.');
+                }
+                else{
+                    DB::table('password_otp')->where('email',$email)->delete();
+                      $user_data = DB::table('users')->where('email', $email)->first();
+                      $url  =url('forget_pasword_view').'/'.$user_data->id;
+                    $result = array('status'=> true, 'message'=>' OTP verified.','url'=>$url);        
+                           
+            }
+        }
+        else
+        {
+            $result = array('status'=> false, 'message'=>'invalid OTP');
+        }
+        echo json_encode($result);
+       }
+
+      public function forget_pasword_view($id)
+      {
+        $user_data=Users::where('id',$id)->first();
+        //   dd($user_data);
+           return view('wemarkthespot.forget_pasword_view',compact('user_data'));
+      }
+
+      public function verify_forgetpassword(Request $request)
+      {
+        if($request->input())
+        {
+            $email= $request->email;
+            $password= hash::make($request->password);
+            $updateData = array('password'=>$password);
+            if(Users::where("email",$email)->update($updateData))
+            {
+                $url = route('signin');
+
+                $result = array('status'=> true, 'message'=>'Your password reset successfully','url'=>$url);
+            }
+            else
+            {
+                $result = array('status'=> false, 'message'=>'Passowrd Updated failed');
+            }
+            echo json_encode($result);
+        }
+    
+      }
 }

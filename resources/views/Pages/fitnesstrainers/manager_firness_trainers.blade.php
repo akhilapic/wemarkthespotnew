@@ -35,7 +35,6 @@
                                 <div class="result"></div>
                             </div>
                             <button  style="margin-bottom: 10px" class="btn btn-primary delete_all" data-url="{{ url('fitness_trainer_delall') }}">Selected Delete</button>
-
                             <button  style="margin-bottom: 10px" class="btn btn-danger filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='1'>Pending</button>
                             <button  style="margin-bottom: 10px" class="btn btn-primary filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='2'>Approved</button>						
                             <button  style="margin-bottom: 10px" class="btn btn-warning filterdata" data-url="{{ url('fitness_trainer_filter') }}" data-status='3'>Rejected</button>

@@ -283,6 +283,37 @@ $(".add_workout_submitbtn").on("click",function(){
 			}
 		});
 	});
+	$('.useractivedeactive').change(function() {
+		
+		host_url = "/development/wemarkthespot/";
+		var status = $(this).prop('checked') == true ? 1 : 0; 
+		var token = $("meta[name='csrf-token']").attr("content");
+		var user_id = $(this).data('id'); 
+		
+		if(status==0)
+		{
+			$("#u_reject").modal('show');
+			$("#user_id").val(user_id);
+			$("#status").val(status);
+
+		}
+		else
+		{
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: host_url+'userchangestatus',
+				data: {'_token':  token,'status': status, 'user_id': user_id},
+				success: function(data){
+				  setTimeout(function(){
+					  jQuery('.result').html('');
+					  window.location.reload();
+				  }, 1000);
+				}
+			});
+		}
+	
+	});
 	
 	$('.category_status').change(function() {
 		
@@ -925,6 +956,50 @@ rules: {
 	}
 });
 
+$("#user_deactive").validate({
+	rules: {
+		
+		reason: {required: true,},
+		},
+		messages: {
+		reason: {required: "Please enter reason",},
+	},
+		submitHandler: function(form) {
+		   var formData= new FormData(jQuery('#user_deactive')[0]);
+	//alert("user_id"+$("#user_id").val());
+		   formData.append("user_id",$("#user_id").val());
+		 
+		jQuery.ajax({
+				url: host_url+"userchangestatus",
+				type: "post",
+				cache: false,
+				data: formData,
+				processData: false,
+				contentType: false,
+				
+				success:function(data) { 
+				var obj = JSON.parse(data);
+				if(obj.status==true){
+					$("#u_reject").modal('hide');
+					jQuery('#name_error').html('');
+					jQuery('#email_error').html('');
+					jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+				//	jQuery('.result').html('');
+					setTimeout(function(){
+						
+						window.location = host_url+"user_list";
+					}, 3000);
+				}
+				else{
+					if(obj.status==false){
+						jQuery('#name_error').html(obj.message);
+						jQuery('#name_error').css("display", "block");
+					}
+				}
+				}
+			});
+		}
+	});
 	// $("#admin_change_psd").on("click",function(){
 	// 	old_password = $("#user_change_password").val();
 	// 	new_password = $("#new_password").val();

@@ -43,7 +43,7 @@ class userController extends Controller
             {
                 if($emailExist->email=$email)
                 {
-                    if($emailExist->status==0)
+                    if($emailExist->status==1)
                     {
                         if(Hash::check($request->password, $emailExist->password))
                         {
@@ -491,9 +491,9 @@ class userController extends Controller
                             $updateData['password']=$user_data->password;
                             $updateData['role']=$user_data->role;
                             $updateData['image'] =  isset($user_data->image)? $user_data->image : $image_url ;
-                             $updateData['created_at'] =   $date ;
+                            $updateData['created_at'] =   $date ;
                             $updateData['updated_at'] =   $date ;
-                          //  $updateData['status'] =   0 ;
+                            $updateData['status'] =   1 ;
                           //  dd($updateData);
 
                             DB::table('users')->insert($updateData);

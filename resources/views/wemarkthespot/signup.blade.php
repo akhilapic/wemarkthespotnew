@@ -22,7 +22,22 @@
 	<script src="{{asset('assets/js/customvalidation.js')}}"></script>
 	<link href="{{asset('/assets/css/style.css')}}" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="{{asset('assets/build/css/intlTelInput.css')}}">
-  <link rel="stylesheet" href="{{asset('assets/build/css/demo.css')}}">
+  <!-- <link rel="stylesheet" href="{{asset('assets/build/css/demo.css')}}"> -->
+
+  <style>
+   .form-check.form-check-inline .form-check-input {
+      padding: 0px;
+      width: 18px;
+      height: 18px;
+   }
+   .form-check.form-check-inline .form-check-input:checked::before {
+      top: 4px;
+   }
+   .iti.iti--allow-dropdown {
+      width: 100%;
+   }
+
+     </style>
 </head>
 
    <body>
@@ -78,7 +93,7 @@
                               <span class="error alert alert-dange">{{ $errors->first('email') }}</span>
                            @endif
                            <div class="mb-3">
-                              <label for="phone-number" class="form-label">Phone Number <span>(Optional)</span></label>
+                              <label for="phone-number" class="form-label d-block">Phone Number <span>(Optional)</span></label>
                               <input type="hidden" name="country_code" id="country_code">
                               <input type="text" class="form-control" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'');"  name="phone" id="phone"  value="{{old('phone')}}" placeholder="Enter Phone Number"/>
                            </div>
@@ -143,7 +158,7 @@
                               <span class="error alert alert-dange">{{ $errors->first('upload_doc') }}</span>
                            @endif
                            <div class="w-75 mx-auto mt-5">
-	<input type="submit" class="btn btn-primary w-100"  value="Sign Up" data-bs-toggle="modal" data-bs-target="#approval">
+	<input type="submit" class="btn btn-primary w-100 btn_submit_tranning"  value="Sign Up" data-bs-toggle="modal" data-bs-target="#approval">
                             
                            </div>
                         </form>

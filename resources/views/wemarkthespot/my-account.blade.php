@@ -1,9 +1,24 @@
 <?php
  $base_url =  URL::to('/');
 ?>
+
 @include("inc/header");
 <link rel="stylesheet" href="{{asset('assets/build/css/intlTelInput.css')}}">
-  <link rel="stylesheet" href="{{asset('assets/build/css/demo.css')}}">
+  <!-- <link rel="stylesheet" href="{{asset('assets/build/css/demo.css')}}"> -->
+  <style>
+   .form-check.form-check-inline .form-check-input {
+      padding: 0px;
+      width: 18px;
+      height: 18px;
+   }
+   .form-check.form-check-inline .form-check-input:checked::before {
+      top: 4px;
+   }
+   .iti.iti--allow-dropdown {
+      width: 100%;
+   }
+
+     </style>
    <main class="my-accont">
          <div class="container-fluid">
             <h1 class="title">Account Settings</h1>
@@ -71,14 +86,15 @@
                            <input type="text" class="form-control" onkeypress="return /^[a-zA-Z \s]+$/i.test(event.key)" name="business_name"  value="{{$account->business_name}}" placeholder="Enter Business Name">
                         </div>
                         <div class="col-md-6">
+                        <label for="phone-number" class="form-label ">Phone Number</label><br/>
+                        <input type="hidden" id="country_code"  name="country_code" />
+                           <input type="text" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="phone" id="phone" value="{{$account->phone}}" maxlength="10" placeholder="Enter Phone Number">
+                        </div>
+                        <div class="col-md-6">
                            <label class="form-label">Email</label>
                            <input type="text" readonly class="form-control" name="email" value="{{$account->email}}" placeholder="Enter Email">
                         </div>
-                        <div class="col-md-6">
-                        <label class="form-label">Mobile Number</label><br/>
-                        <input type="hidden" id="country_code"  name="country_code" value="{{$account->country_code}}"/>
-                           <input type="text" class="form-control" oninput="this.value=this.value.replace(/[^0-9]/g,'');" name="phone" id="phone" value="{{$account->phone}}" maxlength="10" placeholder="Enter Phone Number">
-                        </div>
+                        
                         <div class="col-md-6">
                            <label class="form-label">Opening Hours</label>
                            <input type="time" name="opeing_hour"  value="{{$account->opeing_hour}}" class="form-control without_ampm" value="">
@@ -128,7 +144,7 @@
                         <input type="hidden" id="hiddenbusiness_sub_category" value="{{$account->business_sub_category}}"/>
                         <div class="col-md-6">
                            <div><label class="form-label">Select Sub Category <span style="color:Red">*</span></label></div>
-                           <select id="sub_category" class="form-control" name="business_sub_category">
+                           <select id="sub_category" class="form-select" name="business_sub_category">
                            
                                  <option value="">Select Sub Category</option>
                                  
@@ -151,7 +167,7 @@
                         </div>
                      </div>
 
-                     <button type="submit" class="btn btn-primary mt-5 mb-2 px-4 btn_submit_tranning">Update Profile</button>
+                     <button type="submit" class="btn btn-primary mt-5 mb-2 px-4 pb-2 btn_submit_tranning">Update Profile</button>
                   </form>
                  
                </div>
@@ -173,9 +189,26 @@
             </div>
          </div>
       </div>
-@include("inc/footer");
+@include("inc/footer")
 <script src="{{asset('assets/build/js/intlTelInput.js')}}"></script>
 <script type="text/javascript">
+   $(document).ready(function() {
+
+      country_code =$(".iti__selected-flag").attr("title");
+         const myArr = country_code.split(": ");
+         c_code ='+1';//myArr[1];
+         $("#country_code").val(c_code);
+         // console.log($("#country_code").val());
+    
+    $(".btn_submit_tranning").on("click",function(){
+        country_code =$(".iti__selected-flag").attr("title");
+         const myArr = country_code.split(": ");
+         c_code ='+91';//myArr[1];
+         $("#country_code").val(c_code);
+          console.log($("#country_code").val());
+    
+      });
+   });
     $(function(){
    var    category_id = $("input[type='radio'].select_buiness_category:checked").val();
    var  hiddenbusiness_sub_category = $("#hiddenbusiness_sub_category").val();

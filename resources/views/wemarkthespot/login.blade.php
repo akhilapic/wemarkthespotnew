@@ -8,6 +8,14 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title> Spot </title>
       <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" type="text/css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+   <style>
+#eye1 {
+    position: absolute;
+    right: 15px;
+    top: 48px;
+}
+   </style>
    </head>
    <body>
       <!-- header -->
@@ -50,14 +58,15 @@
                            <label for="emailnumber" class="form-label">Email Address</label>
                            <input type="text" class="form-control" name="email" id="Email1" aria-describedby="emailHelp" placeholder="Enter Email">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" style="position:relative;">
                            <label for="password" class="form-label">Password</label>
                            <input type="password" class="form-control" name="password" id="Password1" placeholder="Enter Password">
+                           <span class="fa fa-eye input_icon" id="eye1" style="cursor: pointer ;color: #9f9a9a;" data-name="password"></span>
                         </div>
                         <div class="mb-2 form-check ps-0">
                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
                            <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-                           <a class="forgot float-end" href="otp-verifiction.html">Forgot Password?</a>
+                           <a class="forgot float-end" href="{{url('forgetpsd')}}">Forgot Password?</a>
                         </div>
                         <div class="w-50 mx-auto mt-5">
                            <button type="submit" class="btn btn-primary w-100">Sign In</button>
@@ -89,11 +98,51 @@
       <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
       <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+	$(function(){
+  $("#eye1").on("click",function(){
+		 	
+			type=$("input[name='"+$(this).data("name")+"']").attr("type");
+				  if(type=='password')
+					{
+						$("#eye1").removeClass("fa-eye");
+						$("#eye1").addClass("fa-eye-slash");
+						$("input[name='"+$(this).data("name")+"']").attr("type",'text');
+					}
+					else
+					{
+						$("#eye1").addClass("fa-eye");
+						$("#eye1").removeClass("fa-eye-slash");
+						$("input[name='"+$(this).data("name")+"']").attr("type",'password');
+					}
+        		
+		  
+		});
+
+ // $(".input_icon").on("click",function(){
+        	
+	// 		type=$("input[name='"+$(this).data("name")+"']").attr("type");
+ //            if(type=='password')
+	// 		{
+	// 			$("input[name='"+$(this).data("name")+"']").attr("type",'text');
+	// 		}
+	// 		else
+	// 		{
+	// 			$("input[name='"+$(this).data("name")+"']").attr("type",'password');
+	// 		}
+	// 	});
+	});
+
+    </script>
       <script>
+          jQuery.validator.addMethod("emailExt", function(value, element, param) {
+    return value.match(/^[a-zA-Z0-9_\.%\+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$/);
+},'Please enter valid email');
+
          $("#manage_business_signin").validate({
 rules: {
    password: {required: true,},
-   email: {required: true,email: true,},  
+   email: {required: true,email: true,maxlength:50,emailExt: true,}, 
 
    },
 
@@ -130,10 +179,10 @@ messages: {
                if(obj.status==false)
                {
                //   alert(obj.message);
-                $('#staticBackdrop').modal('show');
+            //    $('#staticBackdrop').modal('show');
 
-                $("#msg").text(obj.message);
-                  jQuery('#msg_error').html('');
+//                $(".msg_error").text(obj.message);
+                  jQuery('#msg_error').html('<span>'+obj.message+'</span>');
                   //jQuery('#msg_error').html(obj.message);
             //jQuery('#msg_error').css("display", "block");
             //    jQuery('#msg_error').css({'display','block','color':'red'});

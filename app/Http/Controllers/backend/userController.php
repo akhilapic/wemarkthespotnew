@@ -12,10 +12,10 @@ class userController extends Controller
     public function index()
     {   
 
-        $users = User::where('role',97)->get();
+        //$users = User::where('role',97)->get();
         //$users = DB::table('users')->get();
-        $users=User::where('id', '!=' , 8)->where('id', '!=' , 72)->get();
-
+        $users=User::where('role',97)->where('id', '!=' , 8)->where('id', '!=' , 72)->get();
+    //    dd($users);
 
         return view('Pages.customer', compact('users'));
     }
@@ -370,5 +370,21 @@ class userController extends Controller
             }
             echo json_encode($result);
             } 
+
+
+            public function userchangeStatus(Request $request)
+            {
+                $id = $request->user_id;
+                $status = $request->status;
+                $data = ['status'=>$status,'reason'=>isset($request->reason) ? $request->reason : '' ];
+                $update=  User::where('id', $id)->update($data);
+                if($update){
+                    $result = array("status"=> true, "message"=>"Status updated successfully ");
+                }
+                else{
+                    $result = array("status"=> false, "message"=>"not update status");
+                }
+                echo json_encode($result);
+            }
     
 }

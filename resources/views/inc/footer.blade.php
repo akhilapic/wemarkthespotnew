@@ -58,11 +58,6 @@
 	<!-- Custom Js -->
    <script src="{{asset('assets/js/chart.min.js')}}"></script>
 	<script src="{{asset('assets/js/custom.js')}}"></script>
-
    </body>
 </html>
 
-
-</body>
-
-</html>

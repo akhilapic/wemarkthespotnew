@@ -72,12 +72,16 @@
 												</a> 
 												<span class="status">
 													<label class="switch">
-														<input data-id="{{$user->id}}" class="toggle-class switch-input" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Active" data-off="InActive" {{ $user->status ? 'checked' : '' }}>
+														@if($user->status==1)
+														<input data-id="{{$user->id}}" class=" useractivedeactive switch-input" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Active" data-off="InActive" {{ $user->status ? 'checked' : '' }}>
 														<span class="switch-label" data-on="Active" data-off="Deactive"></span> 
 														<span class="switch-handle"></span> 
+														@else
+														<input data-id="{{$user->id}}" class=" useractivedeactive switch-input" type="checkbox" data-onstyle="success" data-offstyle="danger" data-toggle="toggle" data-on="Deactive" data-off="InActive">
+														<span class="switch-label" data-on="Deactive" data-off="Deactive"></span> 
+														<span class="switch-handle"></span> 
+														@endif
 													</label>
-													
-													
 												</span>
 											</div>
 											  
@@ -123,5 +127,29 @@
 		</div>
 	</div>
 </div>
-
+<div class="modal fade done_message" id="u_reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex align-items-center">
+                        <h4 class="modal-title" id="exampleModalLabel1">Message</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body ">
+                        <form class=""  method="post" action="javascript:void(0)" id="user_deactive">
+                            @csrf
+                            <div class="mb-3 col-md-12">
+                                <input type="hidden" id="user_id" name ="id"/>
+                                <input type="hidden"  name ="status" id="status" value="0"/>
+                                <label for="Name" class="control-label">Reason:</label>
+                                <input type="text" required="true" id="reason" name="reason" class="form-control" id="recipient-name1">
+                         
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-danger text-danger font-weight-medium" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit"  id="submit"  class="btn btn-success btn_submit">Ok</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 @stop

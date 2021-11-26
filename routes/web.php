@@ -72,7 +72,6 @@ Route::post('/fitness-trainer-data',[App\Http\Controllers\FitnessTrainerControll
 Route::post('/set_password_fitness_trainer',[App\Http\Controllers\FitnessTrainerController::class, 'set_password_fitness_trainer'])->name('set_password_fitness_trainer')->middleware('auth');
 
 
-Route::post('/fitness_trainer_delall',[App\Http\Controllers\FitnessTrainerController::class, 'deleteAll'])->name('fitness_trainer_delall')->middleware('auth');
 
 Route::get('/manage_business_del/{id}',[App\Http\Controllers\FitnessTrainerController::class, 'delete'])->name('manage_business_del')->middleware('auth');
 
@@ -210,6 +209,8 @@ Route::get('/fitness-survey', function () {
  Route::get('/user-view/{id}', 'App\Http\Controllers\backend\userController@userview');
 Route::post('/changeStatus/{id}', [App\Http\Controllers\backend\userController::class, 'changeStatus'])->name('changeStatus')->middleware('auth');
 
+Route::post('/userchangestatus', [App\Http\Controllers\backend\userController::class, 'userchangeStatus'])->name('userchangeStatus')->middleware('auth');
+
 
 // end admin panel
  Route::get('/my-offers', 'App\Http\Controllers\MyoffersController@index');
@@ -324,4 +325,18 @@ Route::get('/my_account','App\Http\Controllers\LoginController@myaccount')->name
  
  Route::post('/sub_category_by_category_id', [App\Http\Controllers\FitnessTrainerController::class, 'sub_category_by_category_id'])->name('sub_category_by_category_id');
  
-  //=======================================wemarkthespot AND===============================================================================
+ Route::post('/fitness_trainer_delall',[App\Http\Controllers\FitnessTrainerController::class, 'deleteAll'])->name('fitness_trainer_delall')->middleware('auth');
+
+ Route::get('/forgetpsd',[App\Http\Controllers\LoginController::class, 'forgetpsd']);
+
+Route::post('/forgotPasswordemailcheck',[App\Http\Controllers\LoginController::class, 'forgotPassword'])->name('forgotPasswordemailcheck');
+
+Route::get('/otp-verifictionforget/{id}','App\Http\Controllers\LoginController@otp_verifictionforget');
+
+
+Route::post('/verify_otpforget', 'App\Http\Controllers\LoginController@verify_otpforget')->name('verify_otpforget');
+Route::get('/forget_pasword_view/{id}','App\Http\Controllers\LoginController@forget_pasword_view');
+Route::post('/verify_forgetpassword', 'App\Http\Controllers\LoginController@verify_forgetpassword')->name('verify_forgetpassword');
+
+
+//=======================================wemarkthespot AND===============================================================================

@@ -56,10 +56,11 @@
 								<label for="password" class="control-label">DOB:</label>
 								<input type="text" id="language" name="language"  readonly="true" value="{{$user->dob}}"    class="form-control">
 							</div>
-							<div class="mb-3 col-md-4" style="display: none;">
-								<label for="password" class="control-label">Phone Number:</label>
-								<input type="text" id="language" name="language"  readonly="true" value="{{$user->country_code}}{{$user->phone}}"    class="form-control">
+							<div class="mb-3 col-md-4" style="display: ;">
+								<label for="password" class="control-label">Reason:</label>
+								<input type="text" id="reason" name="reason"  readonly="true" value="{{$user->reason}}"    class="form-control">
 							</div>
+							
 						</div>
 						<a type="button" href="{{route('user_list')}}" class="btn btn-dark fa-pull-left mt-3">Back</a>
 						<!-- <input type="submit" id="submit" value="Add" class="btn btn-success btn_submit fa-pull-right mt-3"> -->

@@ -1114,4 +1114,9 @@ public function fitness_trainer_data(Request $request)
         }
         echo json_encode($result);
     }
+
+    // public function checkemail(Request $request)
+    // {
+    //     dd($request->input());
+    // }
 }
