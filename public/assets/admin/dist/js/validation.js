@@ -58,7 +58,7 @@ messages: {
 		});
 	}
 });
-
+/*
 $("#category_add1").validate({
 rules: {
 	name: {required: true,},
@@ -102,7 +102,8 @@ messages: {
 			}
 		});
 	}
-});
+});*/
+/*
 $("#category_edit1").validate({
 	rules: {
 		name: {required: true,},
@@ -147,8 +148,8 @@ $("#category_edit1").validate({
 			});
 		}
 	});
-
-
+*/
+/*
 	$("#subcategory_add1").validate({
 		rules: {
 			category_id: {required: true,},
@@ -196,7 +197,9 @@ $("#category_edit1").validate({
 				});
 			}
 		});
-		$("#subcategory_edit1").validate({
+*/	
+/*
+$("#subcategory_edit1").validate({
 			rules: {
 				category_id: {required: true,},
 				name: {required: true,},
@@ -242,7 +245,7 @@ $("#category_edit1").validate({
 						}
 					});
 				}
-			});
+			});*/
 $(".add_workout_submitbtn").on("click",function(){
 
 	$(".box_number_of_day").each(function(){

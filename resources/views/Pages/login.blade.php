@@ -93,7 +93,7 @@
                                 <div class="form-group">
                                     <div class="d-flex">
                                         <div class="checkbox checkbox-info pt-0">
-                                            <input id="checkbox-signup" type="checkbox" class="material-inputs chk-col-indigo">
+                                            <input id="checkbox-signup" type="checkbox" class="material-inputs chk-col-indigo" name="remember" >
                                             <label for="checkbox-signup"> Remember me </label>
                                         </div>
                                         <!--<div class="ms-auto">-->

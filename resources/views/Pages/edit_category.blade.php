@@ -75,7 +75,52 @@
     <!-- ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->
-
+<script>
+	$("#category_edit1").validate({
+	rules: {
+		name: {required: true,},
+		short_information: {required: true,},  
+		
+		detail_information: {required: true,},
+		},
+	messages: {
+		name: {required: "Please enter category",},
+		short_information: {required: "Please enter short information",},   
+	
+		detail_information: {required: "Please enter detail information",},
+	},
+		submitHandler: function(form) {
+		   var formData= new FormData(jQuery('#category_edit1')[0]);
+		jQuery.ajax({
+				url: host_url+"category-edit",
+				type: "post",
+				cache: false,
+				data: formData,
+				processData: false,
+				contentType: false,
+				
+				success:function(data) { 
+				var obj = JSON.parse(data);
+				if(obj.status==true){
+					jQuery('#name_error').html('');
+					jQuery('#email_error').html('');
+					jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+					setTimeout(function(){
+						jQuery('.result').html('');
+						window.location = host_url+"manager_category";
+					}, 2000);
+				}
+				else{
+					if(obj.status==false){
+						jQuery('.result').html("<div class='alert alert-success alert-dismissible text-white border-0 fade show' role='alert'><button type='button' class='btn-close btn-close-white' data-bs-dismiss='alert' aria-label='Close'></button><strong>Success - </strong> "+obj.message+"</div>");
+					}
+					
+				}
+				}
+			});
+		}
+	});
+	</script>
 @stop
 
 

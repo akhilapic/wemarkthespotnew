@@ -213,17 +213,17 @@ Route::post('/userchangestatus', [App\Http\Controllers\backend\userController::c
 
 
 // end admin panel
- Route::get('/my-offers', 'App\Http\Controllers\MyoffersController@index');
+ Route::get('/my-offers', 'App\Http\Controllers\MyoffersController@index')->middleware('Website');
 // Route::get('my-offers',function(){
 // return view('wemarkthespot.my-offers');
 // });
 
-Route::get('/subscriptions/', 'App\Http\Controllers\SubscriptionsController@index');
-Route::get('/hotspot-updates', 'App\Http\Controllers\HotspotUpdatesController@index');
-Route::get('/report-management', 'App\Http\Controllers\ReportManagementController@index');
-Route::get('/community-reviews', 'App\Http\Controllers\CommunityReviewsController@index');
+Route::get('/subscriptions/', 'App\Http\Controllers\SubscriptionsController@index')->middleware('Website');;
+Route::get('/hotspot-updates', 'App\Http\Controllers\HotspotUpdatesController@index')->middleware('Website');
+Route::get('/report-management', 'App\Http\Controllers\ReportManagementController@index')->middleware('Website');;
+Route::get('/community-reviews', 'App\Http\Controllers\CommunityReviewsController@index')->middleware('Website');;
 
-Route::get('/contact-us', 'App\Http\Controllers\ContactUsController@index');
+Route::get('/contact-us', 'App\Http\Controllers\ContactUsController@index')->middleware('Website');
 //Route::get('/login', 'App\Http\Controllers\LoginController@index');
 Route::get('/payment', 'App\Http\Controllers\PaymentsController@index');
 
@@ -269,19 +269,22 @@ Route::get('/manage_business_edit/{id}',[App\Http\Controllers\FitnessTrainerCont
 
 Route::get('ac-change-password',function(){
     return view('wemarkthespot.ac-change-password');
-});
+})->middleware('Website');
+
 Route::get('notifications',function(){
     return view('wemarkthespot.notifications');
-});
+})->middleware('Website');
+
 Route::get('my-subscription',function(){
     return view('wemarkthespot.my-subscription');
-});
+})->middleware('Website');
 // Route::get('otp-verifiction',function(){
 //     return view('wemarkthespot.');
 // });
 Route::get('change-password',function(){
     return view('wemarkthespot.change-password');
-});
+})->middleware('Website');
+
 Route::get('/my_profile', function()
 {
    return View('Pages.my_profile');
@@ -295,7 +298,7 @@ Route::get('/my_profile', function()
 Route::post('/verify_otp','App\Http\Controllers\LoginController@verifyOtp')->name('verify_otp');
 Route::post('/manage_business_signin',[App\Http\Controllers\LoginController::class, 'checklogin'])->name('manage_business_signin');
 
-Route::get('/my_account','App\Http\Controllers\LoginController@myaccount')->name('my_account');
+Route::get('/my_account','App\Http\Controllers\LoginController@myaccount')->name('my_account')->middleware('Website');
 
   Route::Post('/my_profile_edit',[App\Http\Controllers\LoginController::class, 'my_profile_edit'])->name('my_profile_edit');
   Route::get('/add_category', [App\Http\Controllers\FitnessTrainerController::class, 'create'])->middleware('auth');

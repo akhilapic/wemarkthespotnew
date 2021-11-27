@@ -16,8 +16,39 @@ class Admin extends Controller
         return view('Pages.login');
     }  
       
-
     public function customLogin(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+    
+    
+        $remember_me = $request->has('remember') ? true : false; 
+      // dd($remember_me);
+
+    
+        if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember_me))
+        {
+            $user = auth()->user();
+//            dd($user);
+            $request->session()->put('id',$user->id);
+            $request->session()->put('name',$user->name);
+            $request->session()->put('email',$user->email);
+            $request->session()->put('user_id',$user->id);
+            $request->session()->put('role',$user->role);
+            $request->session()->put('use_image',$user->use_image);
+            $request->session()->put('phone',$user->phone);
+               $request->session()->put('image',$user->image);
+
+          return redirect()->to('/dashboard') ->withSuccess('Signed in');
+          
+        }else{
+            return redirect()->back()->with('msg', 'Please enter valid login credentials.');  
+        }
+    
+    }
+    public function customLogin2(Request $request)// comment 26-11-2021 without remember me use
     {
         $request->validate([
             'email' => 'required',
@@ -45,7 +76,7 @@ class Admin extends Controller
             //            ->withSuccess('Signed in');
         }
     return redirect()->back()->with('msg', 'Please enter valid login credentials.');  
-        //return redirect("login")->with('','');
+     
     }
 
 
@@ -61,6 +92,8 @@ class Admin extends Controller
 
     public function signOut() {
         Session::flush();
+        request()->session()->regenerateToken();
+
         Auth::logout();
         return Redirect('login'); //redirect back to login
     }

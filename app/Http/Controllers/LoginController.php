@@ -257,7 +257,7 @@ class LoginController extends Controller
         }
         else
         {
-            $result=array('status'=>false,'statusemail'=> 'Invalid Email address','check'=>"email");
+            $result=array('status'=>false,'message'=> 'Invalid Email address','check'=>"email");
         }
         echo json_encode($result);
 

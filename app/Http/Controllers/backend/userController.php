@@ -14,7 +14,7 @@ class userController extends Controller
 
         //$users = User::where('role',97)->get();
         //$users = DB::table('users')->get();
-        $users=User::where('role',97)->where('id', '!=' , 8)->where('id', '!=' , 72)->get();
+    $users=User::where('role',97)->where('id', '!=' , 8)->where('id', '!=' , 72)-> orderBy('id', 'desc')->get();
     //    dd($users);
 
         return view('Pages.customer', compact('users'));
